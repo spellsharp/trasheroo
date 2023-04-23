@@ -145,7 +145,12 @@ class _HomeState extends State<Home> {
         ),
         toolbarHeight: 73,
       ),
-      drawer: const Sidebar(),
+      drawer: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.transparent,
+        ),
+        child: const Sidebar(),
+      ),
       body: Stack(children: [
         Column(
           children: [

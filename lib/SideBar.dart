@@ -6,13 +6,26 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Drawer(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.8,
+          // decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.circular(20)
+          // ),
+          // width: MediaQuery.of(context).size.width * 0.8,
           color: Color.fromRGBO(11, 110, 79, 0.9),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Sidebar'),
+              Container(
+                height: 84.0,
+                width: 305,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
+                child: Text('Sidebar'),
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
