@@ -3,7 +3,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:trasheroo/SideBar.dart';
 
 class DottedBox extends StatelessWidget {
-  const DottedBox({super.key});
+  const DottedBox({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,6 @@ class DottedBox extends StatelessWidget {
 
 class localTrash extends StatefulWidget {
   const localTrash({Key? key}) : super(key: key);
-
   @override
   State<localTrash> createState() => localTrashState();
 }
@@ -93,14 +92,16 @@ class localTrashState extends State<localTrash> {
 }
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  bool isSidebarOpen = false;
+  bool _isDrawerOpen = false;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Explore Page'),
@@ -116,11 +117,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final double appBarHeight = AppBar().preferredSize.height;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
+          // crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             const Text(
               'Trasheroo',
@@ -131,11 +134,11 @@ class _HomeState extends State<Home> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.zero,
-              child: Image.asset(
-                'assets/Logo.png',
-                fit: BoxFit.contain,
-                height: 70,
+              padding: const EdgeInsets.only(right: 8.0),
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/Logo.png'),
+                radius: 35,
+                backgroundColor: Colors.transparent,
               ),
             )
           ],
@@ -149,31 +152,32 @@ class _HomeState extends State<Home> {
         data: Theme.of(context).copyWith(
           canvasColor: Colors.transparent,
         ),
-        child: const Sidebar(),
+        child: Sidebar(),
       ),
-      body: Stack(children: [
-        Column(
-          children: [
-            Container(
-              height: kToolbarHeight + 25,
-            ),
-            Row(
-              children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 25.0),
-                      child: DottedBox(),
-                    ),
-                    localTrash(),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-        // if (isSidebarOpen) Stack(children: [Sidebar()]),
-      ]),
+      body: SingleChildScrollView(
+        child: Stack(children: [
+          Column(
+            children: [
+              Container(
+                height: kToolbarHeight + 25,
+              ),
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 25.0),
+                        child: DottedBox(),
+                      ),
+                      localTrash(),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ]),
+      ),
     );
   }
 }

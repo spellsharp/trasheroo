@@ -53,20 +53,39 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+
+  Home _homePage = Home();
+  // bool sideBarOpen = false;
+  // bool _show = true;
+
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     Text('Explore Page'),
     Text('Profile Page'),
   ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  // void showBottomBar() {
+  //   setState(() {
+  //     _show = true;
+  //   });
+  // }
+
+  // void hideBottomBar() {
+  //   setState(() {
+  //     _show = false;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     final double appBarHeight = AppBar().preferredSize.height;
+    // bool isDrawerOpen = _homePage.isDrawerOpen();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
       bottomNavigationBar: Container(
@@ -76,10 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         height: 87,
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(25.0),
-            topRight: Radius.circular(25.0),
-          ),
+          // borderRadius: const BorderRadius.only(
+          //   topLeft: Radius.circular(25.0),
+          //   topRight: Radius.circular(25.0),
+          // ),
           child: BottomNavigationBar(
             elevation: 30.0,
             backgroundColor: Color.fromRGBO(11, 110, 79, 0.9),
@@ -91,9 +110,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
-                            // color: Color.fromARGB(255, 255, 255, 255)
-                            )),
-                    child: Icon(Icons.home, size: 42)),
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    child: Icon(
+                      Icons.home,
+                      size: 42,
+                      color: Colors.white,
+                    )),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
@@ -103,9 +125,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
-                            // color: Color.fromARGB(255, 255, 255, 255)
-                            )),
-                    child: Icon(Icons.explore, size: 42)),
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    child: Icon(
+                      Icons.explore,
+                      size: 42,
+                      color: Colors.white,
+                    )),
                 label: 'Explore',
               ),
               BottomNavigationBarItem(
@@ -115,9 +140,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
-                            // color: Color.fromARGB(255, 255, 255, 255)
-                            )),
-                    child: Icon(Icons.person, size: 42)),
+                            color: Color.fromARGB(255, 255, 255, 255))),
+                    child: Icon(
+                      Icons.person,
+                      size: 42,
+                      color: Colors.white,
+                    )),
                 label: 'Profile',
               ),
             ],
