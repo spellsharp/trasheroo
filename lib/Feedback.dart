@@ -37,7 +37,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(11, 110, 79, 1),
       appBar: AppBar(
-        title: Text('Email Screen'),
+        title: Text('Feedback'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -56,6 +56,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Subject',
+                      fillColor: Colors.white,
                     ),
                   ),
                   SizedBox(height: 20),

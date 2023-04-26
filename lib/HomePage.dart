@@ -4,6 +4,59 @@ import 'package:trasheroo/SideBar.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
+class Leftcard extends StatefulWidget {
+  const Leftcard({Key? key}) : super(key: key);
+  @override
+  State<Leftcard> createState() => _LeftcardState();
+}
+
+class _LeftcardState extends State<Leftcard> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Container(
+        height: 161,
+        width: 337,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+          color: Color.fromRGBO(89, 90, 74, 1),
+        ),
+      ),
+    );
+  }
+}
+
+class RightCard extends StatefulWidget {
+  const RightCard({Key? key}) : super(key: key);
+
+  @override
+  State<RightCard> createState() => _RightCardState();
+}
+
+class _RightCardState extends State<RightCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Container(
+        height: 161,
+        width: 337,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            bottomLeft: Radius.circular(20),
+          ),
+          color: Color.fromRGBO(89, 90, 74, 1),
+        ),
+      ),
+    );
+  }
+}
+
 class DottedBox extends StatefulWidget {
   const DottedBox({Key? key}) : super(key: key);
 
@@ -29,6 +82,7 @@ class _DottedBoxState extends State<DottedBox> {
     return GestureDetector(
       onTap: () {
         _getFromCamera();
+        print("Camera Clicked");
       },
       child: DottedBorder(
         strokeWidth: 4,
@@ -116,7 +170,7 @@ class localTrashState extends State<localTrash> {
 }
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -124,6 +178,28 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool _isDrawerOpen = false;
+
+  List<String> _cardData = [
+    'Card 1',
+    'Card 2',
+    'Card 3',
+    'Card 4',
+    'Card 5',
+  ];
+
+  List<Widget> _cardDisplay() {
+    List<Widget> cardList = [];
+
+    for (int i = 0; i < _cardData.length; i++) {
+      if (i % 2 == 0) {
+        cardList.add(Leftcard());
+      } else {
+        cardList.add(RightCard());
+      }
+    }
+
+    return cardList;
+  }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
@@ -194,6 +270,7 @@ class _HomeState extends State<Home> {
                         child: DottedBox(),
                       ),
                       localTrash(),
+                      ..._cardDisplay()
                     ],
                   ),
                 ],

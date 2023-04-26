@@ -36,6 +36,8 @@ dependencies:
   url_launcher: ^6.1.8
   camera: ^0.9.4+19
   path_provider: ^2.0.14
+
+
   
 
 

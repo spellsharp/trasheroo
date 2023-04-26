@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // bool sideBarOpen = false;
   // bool _show = true;
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Home(),
     Text('Explore Page'),
     Text('Profile Page'),
