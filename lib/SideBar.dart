@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:drop_shadow/drop_shadow.dart';
+import 'package:trasheroo/Feedback.dart';
 import 'AboutUs.dart';
 
 class Sidebar extends StatefulWidget {
@@ -154,17 +155,21 @@ class _SidebarState extends State<Sidebar> {
                 ),
               ),
               GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0, left: 8),
-                  child: Text(
-                    "Feedback",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        color: Colors.white, fontFamily: 'NTR', fontSize: 25),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0, left: 8),
+                    child: Text(
+                      "Feedback",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.white, fontFamily: 'NTR', fontSize: 25),
+                    ),
                   ),
-                ),
-                onTap: () => print("Feedback"),
-              ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FeedbackPage()),
+                    );
+                  }),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 18.0),
                 child: Container(

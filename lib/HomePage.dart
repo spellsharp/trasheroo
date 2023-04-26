@@ -1,53 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:trasheroo/SideBar.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
-class DottedBox extends StatelessWidget {
+class DottedBox extends StatefulWidget {
   const DottedBox({Key? key}) : super(key: key);
 
   @override
+  State<DottedBox> createState() => _DottedBoxState();
+}
+
+class _DottedBoxState extends State<DottedBox> {
+  File? imageFile;
+  void _getFromCamera() async {
+    XFile? pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      maxHeight: 1080,
+      maxWidth: 1080,
+    );
+    setState(() {
+      imageFile = File(pickedFile!.path);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DottedBorder(
-      strokeWidth: 4,
-      borderType: BorderType.RRect,
-      // radius: const Radius.circular(12),
-      padding: const EdgeInsets.all(10),
-      color: const Color.fromRGBO(89, 90, 74, 1),
-      dashPattern: const [9, 9],
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            child: Container(
-              height: 148,
-              width: 285,
-            ),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(
-                    Icons.add,
-                    size: 60,
-                    color: Color.fromRGBO(89, 90, 74, 1),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Click, Upload, Clean Up',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'NTR',
-                      color: Color.fromRGBO(89, 90, 74, 1),
-                    ),
-                  ),
-                ],
+    return GestureDetector(
+      onTap: () {
+        _getFromCamera();
+      },
+      child: DottedBorder(
+        strokeWidth: 4,
+        borderType: BorderType.RRect,
+        // radius: const Radius.circular(12),
+        padding: const EdgeInsets.all(10),
+        color: const Color.fromRGBO(89, 90, 74, 1),
+        dashPattern: const [9, 9],
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: Container(
+                height: 148,
+                width: 285,
               ),
             ),
-          ),
-        ],
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(
+                      Icons.add,
+                      size: 60,
+                      color: Color.fromRGBO(89, 90, 74, 1),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Click, Upload, Clean Up',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'NTR',
+                        color: Color.fromRGBO(89, 90, 74, 1),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
