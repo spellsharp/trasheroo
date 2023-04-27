@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'HomePage.dart';
 import 'SideBar.dart';
+import 'profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -61,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     Text('Explore Page'),
-    Text('Profile Page'),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {

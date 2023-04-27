@@ -45,6 +45,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   path: ^1.8.2
   image_picker: ^0.8.7+4
+  flutter_svg: ^2.0.5
 
 dev_dependencies:
   flutter_test:
