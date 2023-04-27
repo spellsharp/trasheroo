@@ -35,7 +35,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(11, 110, 79, 1),
+      backgroundColor: Color.fromRGBO(243, 255, 166, 1),
       appBar: AppBar(
         title: Text('Feedback'),
       ),

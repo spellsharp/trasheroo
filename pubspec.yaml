@@ -31,11 +31,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  drop_shadow: ^0.0.1+4
+  drop_shadow: ^0.1.0
+  cloud_firestore: ^3.1.5
   font_awesome_flutter: ^10.4.0
   url_launcher: ^6.1.8
-  camera: ^0.9.4+19
   path_provider: ^2.0.14
+  firebase_auth: ^3.3.4
+
 
 
   
@@ -48,6 +50,9 @@ dependencies:
   path: ^1.8.2
   image_picker: ^0.8.7+4
 
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
