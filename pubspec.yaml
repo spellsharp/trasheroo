@@ -49,6 +49,13 @@ dependencies:
   dotted_border: ^2.0.0+3
   path: ^1.8.2
   image_picker: ^0.8.7+4
+  table_calendar: ^3.0.8
+  google_maps_flutter: ^2.2.5
+  location: ^4.4.0
+  flutter_osm_plugin: ^0.53.2
+  latlong: ^0.6.1
+  flutter_map_marker_cluster: ^1.1.0
+  flutter_map: ^3.1.0
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.1

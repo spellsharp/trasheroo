@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'HomePage.dart';
+import 'Map.dart';
 
 class PostIssue extends StatefulWidget {
   final File? imageFile;
@@ -40,6 +41,7 @@ class _PostIssueState extends State<PostIssue> {
         toolbarHeight: 73,
       ),
       body: SingleChildScrollView(
+        // physics: NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             SizedBox(
@@ -51,7 +53,7 @@ class _PostIssueState extends State<PostIssue> {
               children: [
                 Container(
                   height: 200,
-                  width: 400,
+                  width: 350,
                   decoration: widget.imageFile == null
                       ? null
                       : BoxDecoration(
@@ -64,7 +66,9 @@ class _PostIssueState extends State<PostIssue> {
                 ),
               ],
             ),
-            SizedBox(height: 60),
+            SizedBox(height: 30),
+            Map(),
+            SizedBox(height: 30),
             SizedBox(
               width: 350.0,
               child: TextField(

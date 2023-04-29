@@ -4,6 +4,7 @@ import 'HomePage.dart';
 import 'SideBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     Home(),
     Text('Explore Page'),
-    Text('Profile Page'),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {

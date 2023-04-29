@@ -3,11 +3,14 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:trasheroo/SideBar.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:trasheroo/Volunteer.dart';
 import 'postIssue.dart';
 
 class RightCard extends StatefulWidget {
   final cardData;
-  const RightCard({Key? key, this.cardData}) : super(key: key);
+  final cardDescription;
+  const RightCard({Key? key, this.cardData, this.cardDescription})
+      : super(key: key);
 
   @override
   State<RightCard> createState() => _RightCardState();
@@ -16,33 +19,58 @@ class RightCard extends StatefulWidget {
 class _RightCardState extends State<RightCard> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Container(
-          height: 161,
-          width: 337,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Color.fromRGBO(89, 90, 74, 1),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(widget.cardData,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontFamily: 'NTR')),
-                  SizedBox(width: 10),
-                ],
-              ),
-            ],
-          )),
+    return GestureDetector(
+      onTap: (() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Volunteer(
+                  cardData: widget.cardData,
+                  cardDescription: widget.cardDescription)),
+        );
+      }),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+            height: 161,
+            width: 337,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              color: Color.fromRGBO(89, 90, 74, 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(widget.cardData,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontFamily: 'NTR')),
+                          SizedBox(width: 10),
+                          Text(widget.cardDescription,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: 'NTR')),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+      ),
     );
   }
 }
@@ -62,6 +90,28 @@ class _DottedBoxState extends State<DottedBox> {
       maxHeight: 1080,
       maxWidth: 1080,
     );
+
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+
+      // Navigate to a new page after selecting a photo
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PostIssue(imageFile: imageFile)),
+      );
+    }
+  }
+
+  void _getFromGallery() async {
+    XFile? pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 1080,
+      maxWidth: 1080,
+    );
+
     if (pickedFile != null) {
       setState(() {
         imageFile = File(pickedFile.path);
@@ -80,8 +130,35 @@ class _DottedBoxState extends State<DottedBox> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _getFromCamera();
-        print("Camera Clicked");
+        // _getFromCamera();
+        // print("Camera Clicked");
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
+              title: Text('Choose Image Source'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    GestureDetector(
+                      child: Text('Camera'),
+                      onTap: () => _getFromCamera(),
+                    ),
+                    Padding(padding: EdgeInsets.all(8.0)),
+                    GestureDetector(
+                      child: Text('Gallery'),
+                      onTap: () => _getFromGallery(),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
       },
       child: DottedBorder(
         strokeWidth: 4,
@@ -139,21 +216,42 @@ class localTrash extends StatefulWidget {
 class localTrashState extends State<localTrash> {
   late String heading;
   late String cardData;
-  List<String> _cardData = [
-    'Card 1',
-    'Card 2',
-    'Card 3',
-    'Card 4',
-    'Card 5',
-  ];
+  Map<String, Map<String, String>> _cardData = {
+    'Card 1': {
+      'Location': 'Vallikavu',
+      'Description': 'Some description for Card 1'
+    },
+    'Card 2': {
+      'Location': 'Amritapuri',
+      'Description': 'Some description for Card 2'
+    },
+    'Card 3': {
+      'Location': 'Chennai',
+      'Description': 'Some description for Card 3'
+    },
+    'Card 4': {
+      'Location': 'Mahe',
+      'Description': 'Some description for Card 4'
+    },
+    'Card 5': {
+      'Location': 'Ernakulam',
+      'Description': 'Some description for Card 5'
+    },
+  };
 
   List<Widget> _cardDisplay() {
     List<Widget> cardList = [];
 
-    for (int i = 0; i < _cardData.length; i++) {
-      cardData = _cardData[i];
-      cardList.add(RightCard(cardData: cardData));
-    }
+    _cardData.forEach((key, value) {
+      if (value is Map<String, String>) {
+        cardList.add(RightCard(
+          cardData: "${value['Location']}",
+          cardDescription: "${value['Description']}",
+        ));
+      } else {
+        cardList.add(RightCard(cardData: value));
+      }
+    });
 
     return cardList;
   }
