@@ -141,12 +141,32 @@ class VolunteerState extends State<Volunteer> {
                           },
                           child: Map()),
                       SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text(distance.toString()),
-                          Text(" km away"),
-                        ],
-                      ),
+                      distance != null
+                          ? Text(
+                              "$distance Km away",
+                              style: TextStyle(fontFamily: 'NTR', fontSize: 20),
+                            )
+                          : FutureBuilder(
+                              future: Future(() async {
+                                while (distance == null) {
+                                  await Future.delayed(
+                                      Duration(milliseconds: 100));
+                                }
+                                return true;
+                              }),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData && distance != null) {
+                                  return Row(
+                                    children: [
+                                      Text(distance.toString()),
+                                      Text(" km away"),
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
                       Text(
                         widget.cardData,
                         style: TextStyle(fontFamily: 'NTR', fontSize: 20),
