@@ -4,6 +4,8 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'FullMap.dart';
 import 'HomePage.dart';
 
+// import 'package:http/http.dart' as http;
+
 class Map extends StatefulWidget {
   const Map({super.key});
 
@@ -60,62 +62,51 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print("map clicked");
-        setState(() {
-          _isExpanded = !_isExpanded;
-        });
-      },
-      child: Container(
-        height: 200,
-        width: 350,
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          height: _isExpanded ? MediaQuery.of(context).size.height : null,
-          width: _isExpanded ? MediaQuery.of(context).size.width : null,
-          child: OSMFlutter(
-            onMapIsReady: (bool value) async {
-              if (value) {
-                Future.delayed(const Duration(seconds: 1), () async {
-                  await controller.currentLocation();
-                });
-              }
-            },
-            controller: controller,
-            trackMyPosition: false,
-            initZoom: 12,
-            minZoomLevel: 8,
-            maxZoomLevel: 14,
-            stepZoom: 1.0,
-            userLocationMarker: UserLocationMaker(
-              personMarker: MarkerIcon(
-                icon: Icon(
-                  Icons.location_history_rounded,
-                  color: Colors.red,
-                  size: 48,
-                ),
-              ),
-              directionArrowMarker: MarkerIcon(
-                icon: Icon(
-                  Icons.double_arrow,
-                  size: 48,
-                ),
-              ),
-            ),
-            roadConfiguration: RoadOption(
-              roadColor: Colors.yellowAccent,
-            ),
-            markerOption: MarkerOption(
-                defaultMarker: MarkerIcon(
+    return Container(
+      height: 200,
+      width: 350,
+      child: AbsorbPointer(
+        absorbing: true,
+        child: OSMFlutter(
+          onMapIsReady: (bool value) async {
+            if (value) {
+              Future.delayed(const Duration(seconds: 1), () async {
+                await controller.currentLocation();
+              });
+            }
+          },
+          controller: controller,
+          trackMyPosition: false,
+          initZoom: 12,
+          minZoomLevel: 8,
+          maxZoomLevel: 14,
+          stepZoom: 1.0,
+          userLocationMarker: UserLocationMaker(
+            personMarker: MarkerIcon(
               icon: Icon(
-                Icons.person_pin_circle,
-                color: Colors.blue,
-                size: 56,
+                Icons.location_history_rounded,
+                color: Colors.red,
+                size: 48,
               ),
-            )),
+            ),
+            directionArrowMarker: MarkerIcon(
+              icon: Icon(
+                Icons.double_arrow,
+                size: 48,
+              ),
+            ),
           ),
+          roadConfiguration: RoadOption(
+            roadColor: Colors.yellowAccent,
+          ),
+          markerOption: MarkerOption(
+              defaultMarker: MarkerIcon(
+            icon: Icon(
+              Icons.person_pin_circle,
+              color: Colors.blue,
+              size: 56,
+            ),
+          )),
         ),
       ),
     );

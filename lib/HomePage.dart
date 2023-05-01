@@ -9,7 +9,9 @@ import 'postIssue.dart';
 class RightCard extends StatefulWidget {
   final cardData;
   final cardDescription;
-  const RightCard({Key? key, this.cardData, this.cardDescription})
+  final coordinates;
+  const RightCard(
+      {Key? key, this.cardData, this.cardDescription, this.coordinates})
       : super(key: key);
 
   @override
@@ -24,9 +26,12 @@ class _RightCardState extends State<RightCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => Volunteer(
-                  cardData: widget.cardData,
-                  cardDescription: widget.cardDescription)),
+            builder: (context) => Volunteer(
+              cardData: widget.cardData,
+              cardDescription: widget.cardDescription,
+              coordinates: widget.coordinates,
+            ),
+          ),
         );
       }),
       child: Padding(
@@ -62,6 +67,12 @@ class _RightCardState extends State<RightCard> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
+                                  fontFamily: 'NTR')),
+                          SizedBox(width: 10),
+                          Text(widget.coordinates,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
                                   fontFamily: 'NTR')),
                         ],
                       ),
@@ -218,24 +229,29 @@ class localTrashState extends State<localTrash> {
   late String cardData;
   Map<String, Map<String, String>> _cardData = {
     'Card 1': {
-      'Location': 'Vallikavu',
-      'Description': 'Some description for Card 1'
+      'Location': 'Kannur',
+      'Description': 'Some description for Card 1',
+      'Coordinate': '75.3704,11.8745',
     },
     'Card 2': {
       'Location': 'Amritapuri',
-      'Description': 'Some description for Card 2'
+      'Description': 'Some description for Card 2',
+      'Coordinate': '76.4896,9.0949',
     },
     'Card 3': {
       'Location': 'Chennai',
-      'Description': 'Some description for Card 3'
+      'Description': 'Some description for Card 3',
+      'Coordinate': '80.2707,13.0827',
     },
     'Card 4': {
       'Location': 'Mahe',
-      'Description': 'Some description for Card 4'
+      'Description': 'Some description for Card 4',
+      'Coordinate': '75.5343,11.7002',
     },
     'Card 5': {
       'Location': 'Ernakulam',
-      'Description': 'Some description for Card 5'
+      'Description': 'Some description for Card 5',
+      'Coordinate': '76.2999,9.9816',
     },
   };
 
@@ -247,6 +263,7 @@ class localTrashState extends State<localTrash> {
         cardList.add(RightCard(
           cardData: "${value['Location']}",
           cardDescription: "${value['Description']}",
+          coordinates: "${value['Coordinate']}",
         ));
       } else {
         cardList.add(RightCard(cardData: value));

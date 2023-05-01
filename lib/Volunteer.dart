@@ -3,22 +3,66 @@ import 'dart:io';
 import 'HomePage.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'Map.dart';
+import 'RouteDistance.dart';
+import 'package:location/location.dart';
+import 'FullMap.dart';
 
 class Volunteer extends StatefulWidget {
   final cardData;
   final imageFile;
   final cardDescription;
-  const Volunteer(
-      {Key? key, this.cardData, this.imageFile, this.cardDescription})
-      : super(key: key);
+  final coordinates;
+  Volunteer({
+    Key? key,
+    this.cardData,
+    this.imageFile,
+    this.cardDescription,
+    this.coordinates,
+  }) : super(key: key);
 
   @override
   State<Volunteer> createState() => VolunteerState();
 }
 
 class VolunteerState extends State<Volunteer> {
+  Location location = new Location();
+
+  bool _serviceEnabled = false;
+  LocationData? _locationData;
+  double latitude = 0;
+  double longitude = 0;
+  String startPoint = '';
+  String endPoint = '';
+
+  void _getLocation() async {
+    final _locationData = await location.getLocation();
+    setState(() {
+      final latitude = _locationData.latitude;
+      final longitude = _locationData.longitude;
+      startPoint = '$longitude,$latitude';
+      endPoint = widget.coordinates;
+    });
+    print("==============");
+    print(startPoint);
+    print("==============");
+
+    _getDistance();
+  }
+
   String title = '';
   String details = '';
+
+  var distance;
+
+  void _getDistance() async {
+    final distance = await getRouteDistance(startPoint, endPoint);
+    setState(() {
+      this.distance = distance;
+    });
+  }
+
+  void _submitIssue() {}
+
   DateTime today = DateTime.now();
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
@@ -26,7 +70,11 @@ class VolunteerState extends State<Volunteer> {
     });
   }
 
-  void _submitIssue() {}
+  @override
+  void initState() {
+    super.initState();
+    _getLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +128,25 @@ class VolunteerState extends State<Volunteer> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Map(),
+                      GestureDetector(
+                          onTap: () {
+                            print("map clicked");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MapScreenWidget(
+                                        markerPoint: widget.coordinates,
+                                      )),
+                            );
+                          },
+                          child: Map()),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Text(distance.toString()),
+                          Text(" km away"),
+                        ],
+                      ),
                       Text(
                         widget.cardData,
                         style: TextStyle(fontFamily: 'NTR', fontSize: 20),
