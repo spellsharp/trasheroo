@@ -45,7 +45,6 @@ class VolunteerState extends State<Volunteer> {
     print("==============");
     print(startPoint);
     print("==============");
-
     _getDistance();
   }
 

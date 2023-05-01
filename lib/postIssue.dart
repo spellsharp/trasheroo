@@ -6,7 +6,9 @@ import 'RouteDistance.dart';
 
 class PostIssue extends StatefulWidget {
   final File? imageFile;
-  const PostIssue({Key? key, this.imageFile}) : super(key: key);
+  final coordinates;
+  const PostIssue({Key? key, this.imageFile, this.coordinates})
+      : super(key: key);
 
   @override
   State<PostIssue> createState() => _PostIssueState();

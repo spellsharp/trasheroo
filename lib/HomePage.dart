@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:trasheroo/Volunteer.dart';
 import 'postIssue.dart';
+import 'package:location/location.dart';
 
 class RightCard extends StatefulWidget {
   final cardData;
@@ -94,6 +95,17 @@ class DottedBox extends StatefulWidget {
 }
 
 class _DottedBoxState extends State<DottedBox> {
+  Location location = new Location();
+  String coordinate_trash = '';
+  void _getLocation() async {
+    final _locationData = await location.getLocation();
+    setState(() {
+      final latitude = _locationData.latitude;
+      final longitude = _locationData.longitude;
+      final coordinate_trash = '$longitude,$latitude';
+    });
+  }
+
   File? imageFile;
   void _getFromCamera() async {
     XFile? pickedFile = await ImagePicker().pickImage(
@@ -111,7 +123,10 @@ class _DottedBoxState extends State<DottedBox> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => PostIssue(imageFile: imageFile)),
+            builder: (context) => PostIssue(
+                  imageFile: imageFile,
+                  coordinates: coordinate_trash,
+                )),
       );
     }
   }
