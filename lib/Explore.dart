@@ -158,6 +158,8 @@ class _ExploreState extends State<Explore> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
+      backgroundColor: Color.fromARGB(50, 46, 87, 0),
+
       body: Container(
         child: SingleChildScrollView(
           child: Stack(
@@ -192,6 +194,7 @@ class _ExploreState extends State<Explore> {
                           },
                         ),
                         border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                       ),
