@@ -5,6 +5,7 @@ import 'SideBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Profile.dart';
+import 'Explore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Home _homePage = Home();
   static List<Widget> _widgetOptions = <Widget>[
     Home(),
-    Text('Explore Page'),
+    Explore(),
     Profile(),
   ];
 
@@ -76,67 +77,74 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final double appBarHeight = AppBar().preferredSize.height;
     // bool isDrawerOpen = _homePage.isDrawerOpen();
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-          ),
-          height: 87,
-          child: ClipRRect(
-            child: BottomNavigationBar(
-              elevation: 30.0,
-              backgroundColor: Color.fromRGBO(11, 110, 79, 0.9),
-              items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                              color: Color.fromARGB(255, 255, 255, 255))),
-                      child: Icon(
-                        Icons.home,
-                        size: 42,
-                        color: Colors.white,
-                      )),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                              color: Color.fromARGB(255, 255, 255, 255))),
-                      child: Icon(
-                        Icons.explore,
-                        size: 42,
-                        color: Colors.white,
-                      )),
-                  label: 'Explore',
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                              color: Color.fromARGB(255, 255, 255, 255))),
-                      child: Icon(
-                        Icons.person,
-                        size: 42,
-                        color: Colors.white,
-                      )),
-                  label: 'Profile',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-              onTap: _onItemTapped,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.delayed(Duration(milliseconds: 1500));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => super.widget));
+      },
+      child: SafeArea(
+        child: Scaffold(
+          // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
+          bottomNavigationBar: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+            ),
+            height: 87,
+            child: ClipRRect(
+              child: BottomNavigationBar(
+                elevation: 30.0,
+                backgroundColor: Color.fromRGBO(11, 110, 79, 0.9),
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 255, 255, 255))),
+                        child: Icon(
+                          Icons.home,
+                          size: 42,
+                          color: Colors.white,
+                        )),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 255, 255, 255))),
+                        child: Icon(
+                          Icons.explore,
+                          size: 42,
+                          color: Colors.white,
+                        )),
+                    label: 'Explore',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 255, 255, 255))),
+                        child: Icon(
+                          Icons.person,
+                          size: 42,
+                          color: Colors.white,
+                        )),
+                    label: 'Profile',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: Color.fromARGB(255, 255, 255, 255),
+                onTap: _onItemTapped,
+              ),
             ),
           ),
+          body: _widgetOptions[_selectedIndex],
         ),
-        body: _widgetOptions[_selectedIndex],
       ),
     );
   }

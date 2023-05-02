@@ -78,6 +78,9 @@ flutter:
   assets:
     - assets/Logo.png
     - assets/ByteForge.png
+    - assets/vineDropNoBG.jpg
+    - assets/climberNoBG.jpg
+    - assets/BG.png
   fonts:
     - family: NTR
       fonts:

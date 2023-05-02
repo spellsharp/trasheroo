@@ -115,23 +115,31 @@ class ProfileState extends State<Profile> {
                   child: Stack(
                     children: [
                       if (image == null)
-                        const CircleAvatar(
-                          radius: 75,
-                          backgroundColor: Colors.white70,
-                          child: Icon(Icons.person, size: 75),
+                        CircleAvatar(
+                          radius: 77,
+                          backgroundColor: Colors.black26,
+                          child: const CircleAvatar(
+                            radius: 75,
+                            backgroundColor: Colors.white70,
+                            child: Icon(Icons.person, size: 75),
+                          ),
                         )
                       else
                         CircleAvatar(
-                          radius: 75,
-                          backgroundColor: Colors.white70,
-                          child: ClipOval(
-                            child: Image.file(
-                              image!,
-                              width: 116,
-                              height: 116,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.error),
+                          radius: 77,
+                          backgroundColor: Colors.black26,
+                          child: CircleAvatar(
+                            radius: 75,
+                            backgroundColor: Colors.white70,
+                            child: ClipOval(
+                              child: Image.file(
+                                image!,
+                                width: 116,
+                                height: 116,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.error),
+                              ),
                             ),
                           ),
                         ),
@@ -202,21 +210,22 @@ class ProfileState extends State<Profile> {
                 Container(
                   margin: const EdgeInsets.only(top: 260),
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50.0),
-                      topRight: Radius.circular(50.0),
-                    ),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xffF3FFA6),
-                        Color(0xffC4D26D),
-                        Color(0xff98D26D),
-                        Color(0xff77C23E),
-                      ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                    ),
-                  ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50.0),
+                        topRight: Radius.circular(50.0),
+                      ),
+                      color: Color.fromARGB(255, 137, 190, 165)
+                      // gradient: LinearGradient(
+                      //   colors: [
+                      //     Color(0xffF3FFA6),
+                      //     Color(0xffC4D26D),
+                      //     Color(0xff98D26D),
+                      //     Color(0xff77C23E),
+                      //   ],
+                      //   begin: Alignment.bottomCenter,
+                      //   end: Alignment.topCenter,
+                      // ),
+                      ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 280, left: 45),

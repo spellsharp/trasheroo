@@ -77,150 +77,164 @@ class VolunteerState extends State<Volunteer> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
-        appBar: AppBar(
-          titleSpacing: 0,
-          title: Row(
-            children: [
-              const Text(
-                'Volunteer',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontFamily: 'NTR',
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              ),
-            ],
-          ),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-          ),
-          toolbarHeight: 73,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 50,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      height: 200,
-                      width: 350,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(0, 52, 36, 1),
-                        borderRadius: BorderRadius.circular(20),
-                        // image: DecorationImage(image: ),
-                      )),
-                ],
-              ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 25),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            print("map clicked");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapScreenWidget(
-                                        markerPoint: widget.coordinates,
-                                      )),
-                            );
-                          },
-                          child: Map()),
-                      SizedBox(height: 20),
-                      distance != null
-                          ? Text(
-                              "$distance Km away",
-                              style: TextStyle(fontFamily: 'NTR', fontSize: 20),
-                            )
-                          : FutureBuilder(
-                              future: Future(() async {
-                                while (distance == null) {
-                                  await Future.delayed(
-                                      Duration(milliseconds: 100));
-                                }
-                                return true;
-                              }),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData && distance != null) {
-                                  return Row(
-                                    children: [
-                                      Text(distance.toString()),
-                                      Text(" km away"),
-                                    ],
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
-                            ),
-                      Text(
-                        widget.cardData,
-                        style: TextStyle(fontFamily: 'NTR', fontSize: 20),
-                      ),
-                      Text(widget.cardDescription,
-                          style: TextStyle(fontFamily: 'NTR', fontSize: 18)),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              Text(
-                "When do you wish to start?",
-                style: TextStyle(fontFamily: 'NTR', fontSize: 25),
-              ),
-              TableCalendar(
-                rowHeight: 35,
-                focusedDay: today,
-                firstDay: DateTime.now(),
-                lastDay: DateTime.utc(2025, 1, 1),
-                startingDayOfWeek: StartingDayOfWeek.monday,
-                onDaySelected: _onDaySelected,
-                headerStyle: HeaderStyle(
-                  leftChevronVisible: false,
-                  rightChevronVisible: false,
-                  titleCentered: true,
-                  headerPadding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                  formatButtonVisible: false,
-                ),
-                availableGestures: AvailableGestures.all,
-                selectedDayPredicate: (day) => isSameDay(day, today),
-              ),
-              SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: (() {
-                  print("Post Button clicked");
-                  _submitIssue();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                  );
-                }),
-                child: Text(
-                  "Volunteer",
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.delayed(Duration(milliseconds: 1500));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => super.widget));
+      },
+      child: SafeArea(
+        child: Scaffold(
+          // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
+          appBar: AppBar(
+            titleSpacing: 0,
+            title: Row(
+              children: [
+                const Text(
+                  'Volunteer',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 30,
                     fontFamily: 'NTR',
+                    color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 100,
-              )
-            ],
+              ],
+            ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+            ),
+            toolbarHeight: 73,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        height: 200,
+                        width: 350,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(0, 52, 36, 1),
+                          borderRadius: BorderRadius.circular(20),
+                          // image: DecorationImage(image: ),
+                        )),
+                  ],
+                ),
+                SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 25),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              print("map clicked");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapScreenWidget(
+                                          markerPoint: widget.coordinates,
+                                        )),
+                              );
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                  color: Color.fromARGB(255, 0, 97, 50),
+                                  width: 4,
+                                )),
+                                child: Map())),
+                        SizedBox(height: 20),
+                        distance != null
+                            ? Text(
+                                "$distance Km away",
+                                style:
+                                    TextStyle(fontFamily: 'NTR', fontSize: 20),
+                              )
+                            : FutureBuilder(
+                                future: Future(() async {
+                                  while (distance == null) {
+                                    await Future.delayed(
+                                        Duration(milliseconds: 100));
+                                  }
+                                  return true;
+                                }),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData && distance != null) {
+                                    return Row(
+                                      children: [
+                                        Text(distance.toString()),
+                                        Text(" km away"),
+                                      ],
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              ),
+                        Text(
+                          widget.cardData,
+                          style: TextStyle(fontFamily: 'NTR', fontSize: 20),
+                        ),
+                        Text(widget.cardDescription,
+                            style: TextStyle(fontFamily: 'NTR', fontSize: 18)),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30),
+                Text(
+                  "When do you wish to start?",
+                  style: TextStyle(fontFamily: 'NTR', fontSize: 25),
+                ),
+                TableCalendar(
+                  rowHeight: 35,
+                  focusedDay: today,
+                  firstDay: DateTime.now(),
+                  lastDay: DateTime.utc(2025, 1, 1),
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  onDaySelected: _onDaySelected,
+                  headerStyle: HeaderStyle(
+                    leftChevronVisible: false,
+                    rightChevronVisible: false,
+                    titleCentered: true,
+                    headerPadding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    formatButtonVisible: false,
+                  ),
+                  availableGestures: AvailableGestures.all,
+                  selectedDayPredicate: (day) => isSameDay(day, today),
+                ),
+                SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: (() {
+                    print("Post Button clicked");
+                    _submitIssue();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
+                  }),
+                  child: Text(
+                    "Volunteer",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'NTR',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 100,
+                )
+              ],
+            ),
           ),
         ),
       ),

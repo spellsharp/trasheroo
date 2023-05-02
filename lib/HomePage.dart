@@ -37,12 +37,19 @@ class _RightCardState extends State<RightCard> {
       }),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
-        child: Container(
+        child: Card(
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color.fromARGB(255, 224, 224, 224),
+            ),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Container(
             height: 161,
             width: 337,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: Color.fromRGBO(89, 90, 74, 1),
+              color: Color.fromARGB(255, 234, 240, 226),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,19 +67,19 @@ class _RightCardState extends State<RightCard> {
                         children: [
                           Text(widget.cardData,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 18,
                                   fontFamily: 'NTR')),
                           SizedBox(width: 10),
                           Text(widget.cardDescription,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 14,
                                   fontFamily: 'NTR')),
                           SizedBox(width: 10),
                           Text(widget.coordinates,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 10,
                                   fontFamily: 'NTR')),
                         ],
@@ -81,7 +88,9 @@ class _RightCardState extends State<RightCard> {
                   ],
                 ),
               ],
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -142,8 +151,6 @@ class _DottedBoxState extends State<DottedBox> {
       setState(() {
         imageFile = File(pickedFile.path);
       });
-
-      // Navigate to a new page after selecting a photo
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -165,7 +172,7 @@ class _DottedBoxState extends State<DottedBox> {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
+              // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
               title: Text('Choose Image Source'),
               content: SingleChildScrollView(
                 child: ListBody(
@@ -215,7 +222,7 @@ class _DottedBoxState extends State<DottedBox> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Click, Upload, Clean Up',
+                      'Click, Upload, Clean',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'NTR',
@@ -344,7 +351,7 @@ class _HomeState extends State<Home> {
     final double appBarHeight = AppBar().preferredSize.height;
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
+      backgroundColor: Color.fromARGB(50, 46, 87, 0),
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
@@ -382,6 +389,8 @@ class _HomeState extends State<Home> {
       ),
       body: SingleChildScrollView(
         child: Stack(children: [
+          Opacity(opacity: 0.2, child: Image.asset('assets/BG.png')),
+          // Opacity(opacity: 0.2, child: Image.asset('assets/climberNoBG.jpg')),
           Column(
             children: [
               Container(

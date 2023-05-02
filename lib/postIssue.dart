@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'HomePage.dart';
 import 'Map.dart';
-import 'RouteDistance.dart';
+// import 'RouteDistance.dart';
 
 class PostIssue extends StatefulWidget {
   final File? imageFile;
@@ -21,105 +21,119 @@ class _PostIssueState extends State<PostIssue> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
-      appBar: AppBar(
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            const Text(
-              'Post Issue',
-              style: TextStyle(
-                fontSize: 30,
-                fontFamily: 'NTR',
-                color: Color.fromRGBO(255, 255, 255, 1),
-              ),
-            ),
-          ],
-        ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-        ),
-        toolbarHeight: 73,
-      ),
-      body: SingleChildScrollView(
-        // physics: NeverScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 200,
-                  width: 350,
-                  decoration: widget.imageFile == null
-                      ? null
-                      : BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            image: FileImage(widget.imageFile!),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                ),
-              ],
-            ),
-            SizedBox(height: 30),
-            Map(),
-            SizedBox(height: 30),
-            SizedBox(
-              width: 350.0,
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {
-                    title = value;
-                  });
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Subject',
-                  fillColor: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 350.0,
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {
-                    details = value;
-                  });
-                },
-                minLines: 5,
-                maxLines: null,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), hintText: 'Body'),
-              ),
-            ),
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: (() {
-                print("Post Button clicked");
-                _submitIssue();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Home()),
-                );
-              }),
-              child: Text(
-                "Post Issue",
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.delayed(Duration(milliseconds: 1500));
+      },
+      child: Scaffold(
+        // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
+        appBar: AppBar(
+          titleSpacing: 0,
+          title: Row(
+            children: [
+              const Text(
+                'Post Issue',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 30,
                   fontFamily: 'NTR',
+                  color: Color.fromRGBO(255, 255, 255, 1),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+          ),
+          toolbarHeight: 73,
+        ),
+        body: SingleChildScrollView(
+          // physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 200,
+                    width: 350,
+                    decoration: widget.imageFile == null
+                        ? null
+                        : BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: FileImage(widget.imageFile!),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 30),
+              Container(
+                child: Map(),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color.fromARGB(255, 0, 92, 49),
+                    width: 4,
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              SizedBox(
+                width: 350.0,
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      title = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Subject',
+                    fillColor: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                width: 350.0,
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      details = value;
+                    });
+                  },
+                  minLines: 5,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), hintText: 'Body'),
+                ),
+              ),
+              SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: (() {
+                  print("Post Button clicked");
+                  _submitIssue();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
+                }),
+                child: Text(
+                  "Post Issue",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'NTR',
+                  ),
+                ),
+              ),
+              SizedBox(height: 50),
+            ],
+          ),
         ),
       ),
     );

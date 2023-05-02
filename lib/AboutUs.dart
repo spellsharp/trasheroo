@@ -81,7 +81,7 @@ class AboutUs extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 65.0, top: 70),
+                padding: const EdgeInsets.only(left: 80.0, top: 70),
                 child: CircleAvatar(
                   backgroundImage: AssetImage('assets/ByteForge.png'),
                   radius: 115,
@@ -116,7 +116,7 @@ class AboutUs extends StatelessWidget {
                     )),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 130.0, top: 10),
+                padding: const EdgeInsets.only(left: 150.0, top: 10),
                 child: DefaultTextStyle(
                   style: TextStyle(
                       color: Colors.white,
@@ -133,7 +133,7 @@ class AboutUs extends StatelessWidget {
               SizedBox(height: 50),
               Row(
                 children: [
-                  SizedBox(width: 20),
+                  SizedBox(width: 40),
                   DefaultTextStyle(
                     style: TextStyle(
                         color: Colors.white,
@@ -172,7 +172,7 @@ class AboutUs extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 30, left: 130.0),
+                padding: const EdgeInsets.only(top: 30, left: 140.0),
                 child: GestureDetector(
                   onTap: () => _launchInsta(),
                   child: Row(
