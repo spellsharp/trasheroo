@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trasheroo/main.dart';
 import 'dart:io';
 import 'HomePage.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -6,6 +7,7 @@ import 'Map.dart';
 import 'RouteDistance.dart';
 import 'package:location/location.dart';
 import 'FullMap.dart';
+import 'main.dart';
 
 class Volunteer extends StatefulWidget {
   final cardData;
@@ -86,7 +88,8 @@ class VolunteerState extends State<Volunteer> {
       child: SafeArea(
         child: Scaffold(
           // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
-          backgroundColor: Color.fromARGB(255, 199, 209, 189),
+          // backgroundColor: Color.fromARGB(48, 136, 255, 0),
+          backgroundColor: Color.fromRGBO(243, 255, 166, 1),
 
           appBar: AppBar(
             titleSpacing: 0,
@@ -102,9 +105,9 @@ class VolunteerState extends State<Volunteer> {
                 ),
               ],
             ),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-            ),
+            // shape: const RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+            // ),
             toolbarHeight: 73,
           ),
           body: SingleChildScrollView(
@@ -221,7 +224,8 @@ class VolunteerState extends State<Volunteer> {
                     _submitIssue();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(
+                          builder: (context) => MyHomePage(title: "Oombu")),
                     );
                   }),
                   child: Text(

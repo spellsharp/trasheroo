@@ -85,8 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
       child: SafeArea(
         child: Scaffold(
-          // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
-
+          backgroundColor: Color.fromRGBO(243, 255, 166, 1),
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -139,6 +138,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
                 currentIndex: _selectedIndex,
+                unselectedLabelStyle: TextStyle(
+                    color: Color.fromARGB(255, 107, 107, 107),
+                    fontWeight: FontWeight.w500),
+                selectedLabelStyle: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
                 selectedItemColor: Color.fromARGB(255, 255, 255, 255),
                 onTap: _onItemTapped,
               ),

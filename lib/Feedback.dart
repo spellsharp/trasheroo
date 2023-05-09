@@ -37,6 +37,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(243, 255, 166, 1),
       appBar: AppBar(
+        toolbarHeight: 73,
         title: Text('Feedback'),
       ),
       body: SingleChildScrollView(

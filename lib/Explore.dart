@@ -36,7 +36,7 @@ class _ExploreCardState extends State<ExploreCard> {
         child: Card(
             shape: RoundedRectangleBorder(
               side: BorderSide(
-                color: Color.fromARGB(255, 234, 240, 226),
+                color: Color.fromRGBO(0, 24, 2, 0.498),
               ),
               borderRadius: BorderRadius.circular(20.0),
             ),
@@ -45,7 +45,7 @@ class _ExploreCardState extends State<ExploreCard> {
               width: 337,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Color.fromARGB(100, 152, 183, 111),
+                color: Color.fromRGBO(152, 183, 111, 0.8),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +64,7 @@ class _ExploreCardState extends State<ExploreCard> {
                             Text(
                               widget.cardData,
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 56, 72, 41),
+                                  color: Color.fromRGBO(33, 42, 24, 1),
                                   fontSize: 18,
                                   fontFamily: 'NTR'),
                             ),
@@ -72,7 +72,7 @@ class _ExploreCardState extends State<ExploreCard> {
                             Text(
                               widget.cardDescription,
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 56, 72, 41),
+                                  color: Color.fromRGBO(33, 42, 24, 1),
                                   fontSize: 14,
                                   fontFamily: 'NTR'),
                             ),
@@ -80,7 +80,7 @@ class _ExploreCardState extends State<ExploreCard> {
                             Text(
                               widget.coordinates,
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 56, 72, 41),
+                                  color: Color.fromRGBO(33, 42, 24, 1),
                                   fontSize: 10,
                                   fontFamily: 'NTR'),
                             ),
@@ -158,14 +158,13 @@ class _ExploreState extends State<Explore> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
-      backgroundColor: Color.fromARGB(50, 46, 87, 0),
+      // backgroundColor: Color.fromARGB(48, 136, 255, 0),
+      backgroundColor: Color.fromRGBO(243, 255, 166, 1),
 
       body: Container(
         child: SingleChildScrollView(
           child: Stack(
             children: [
-              Opacity(
-                  opacity: 0.2, child: Image.asset('assets/vineDropNoBG.jpg')),
               Column(
                 children: [
                   SizedBox(

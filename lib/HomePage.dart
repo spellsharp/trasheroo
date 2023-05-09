@@ -40,7 +40,7 @@ class _RightCardState extends State<RightCard> {
         child: Card(
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: Color.fromARGB(255, 224, 224, 224),
+              color: Color.fromRGBO(0, 24, 2, 0.498),
             ),
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -49,7 +49,7 @@ class _RightCardState extends State<RightCard> {
             width: 337,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: Color.fromARGB(255, 234, 240, 226),
+              color: Color.fromRGBO(152, 183, 111, 0.8),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,19 +67,19 @@ class _RightCardState extends State<RightCard> {
                         children: [
                           Text(widget.cardData,
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Color.fromRGBO(33, 42, 24, 1),
                                   fontSize: 18,
                                   fontFamily: 'NTR')),
                           SizedBox(width: 10),
                           Text(widget.cardDescription,
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Color.fromRGBO(33, 42, 24, 1),
                                   fontSize: 14,
                                   fontFamily: 'NTR')),
                           SizedBox(width: 10),
                           Text(widget.coordinates,
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Color.fromRGBO(33, 42, 24, 1),
                                   fontSize: 10,
                                   fontFamily: 'NTR')),
                         ],
@@ -351,7 +351,9 @@ class _HomeState extends State<Home> {
     final double appBarHeight = AppBar().preferredSize.height;
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Color.fromARGB(50, 46, 87, 0),
+      // backgroundColor: Color.fromARGB(49, 255, 255, 255),
+      backgroundColor: Color.fromRGBO(243, 255, 166, 1),
+
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
@@ -376,9 +378,9 @@ class _HomeState extends State<Home> {
             )
           ],
         ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-        ),
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+        // ),
         toolbarHeight: 73,
       ),
       drawer: Theme(
@@ -389,7 +391,7 @@ class _HomeState extends State<Home> {
       ),
       body: SingleChildScrollView(
         child: Stack(children: [
-          Opacity(opacity: 0.2, child: Image.asset('assets/BG.png')),
+          // Opacity(opacity: 0.2, child: Image.asset('assets/BG.png')),
           // Opacity(opacity: 0.2, child: Image.asset('assets/climberNoBG.jpg')),
           Column(
             children: [
@@ -398,7 +400,7 @@ class _HomeState extends State<Home> {
               ),
               Row(
                 children: [
-                  SizedBox(width: 15),
+                  SizedBox(width: 8.5),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

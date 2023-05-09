@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'HomePage.dart';
 import 'Map.dart';
-// import 'RouteDistance.dart';
 
 class PostIssue extends StatefulWidget {
   final File? imageFile;
@@ -26,7 +25,6 @@ class _PostIssueState extends State<PostIssue> {
         await Future.delayed(Duration(milliseconds: 1500));
       },
       child: Scaffold(
-        // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
         appBar: AppBar(
           titleSpacing: 0,
           title: Row(
@@ -41,13 +39,9 @@ class _PostIssueState extends State<PostIssue> {
               ),
             ],
           ),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-          ),
           toolbarHeight: 73,
         ),
         body: SingleChildScrollView(
-          // physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [
               SizedBox(
