@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'Volunteer.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:convert';
+import 'dart:typed_data';
 
 class ExploreCard extends StatefulWidget {
   final cardData;
@@ -25,7 +26,16 @@ class ExploreCard extends StatefulWidget {
 }
 
 class _ExploreCardState extends State<ExploreCard> {
-  // void render_image() {}
+  render_image(imageEncoded) {
+    Uint8List bytes = base64Decode(imageEncoded);
+    return Image.memory(
+      bytes,
+      fit: BoxFit.cover,
+      height: 143.0,
+      width: 337.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -37,9 +47,11 @@ class _ExploreCardState extends State<ExploreCard> {
               cardData: widget.cardData,
               cardDescription: widget.cardDescription,
               coordinates: widget.coordinates,
+              image: widget.image64,
             ),
           ),
         );
+        // print(widget.image64);
       }),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
@@ -58,51 +70,73 @@ class _ExploreCardState extends State<ExploreCard> {
                 color: Color.fromRGBO(152, 183, 111, 0.8),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Container(
+                    padding: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(145, 167, 141, 0.494),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(100),
+                      ),
+                    ),
+                    child: Text(
+                      "#" + widget.id,
+                      style: TextStyle(
+                        color: Color.fromRGBO(33, 42, 24, 1),
+                        fontSize: 10,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                  Stack(
                     children: [
-                      // render_image(),
+                      Opacity(
+                        opacity: 0.5,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                          child: render_image(widget.image64),
+                        ),
+                      ),
                       SizedBox(
-                        width: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(
-                              "#" + widget.id,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(33, 42, 24, 1),
-                                  fontSize: 12,
-                                  fontFamily: 'NTR'),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 5),
+                                Text(
+                                  widget.cardData,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(33, 42, 24, 1),
+                                      fontSize: 20,
+                                      fontFamily: 'NTR'),
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  widget.cardDescription,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(33, 42, 24, 1),
+                                      fontSize: 16,
+                                      fontFamily: 'NTR'),
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  widget.coordinates,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(33, 42, 24, 1),
+                                      fontSize: 12,
+                                      fontFamily: 'NTR'),
+                                ),
+                              ],
                             ),
                             SizedBox(width: 10),
-                            Text(
-                              widget.cardData,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(33, 42, 24, 1),
-                                  fontSize: 18,
-                                  fontFamily: 'NTR'),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              widget.cardDescription,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(33, 42, 24, 1),
-                                  fontSize: 14,
-                                  fontFamily: 'NTR'),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              widget.coordinates,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(33, 42, 24, 1),
-                                  fontSize: 10,
-                                  fontFamily: 'NTR'),
-                            ),
                           ],
                         ),
                       ),

@@ -156,17 +156,19 @@ class _PostIssueState extends State<PostIssue> {
               ),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: (() {
-                  print("Post Button clicked");
-                  insertData(title, details, image, coordinates);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MyHomePage(
-                              title: 'postIssuetest',
-                            )),
-                  );
-                }),
+                onPressed: currentLocation == null
+                    ? null
+                    : (() {
+                        print("Post Button clicked");
+                        insertData(title, details, image, coordinates);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyHomePage(
+                                    title: 'postIssuetest',
+                                  )),
+                        );
+                      }),
                 child: Text(
                   "Post Issue",
                   style: TextStyle(

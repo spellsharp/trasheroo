@@ -8,16 +8,18 @@ import 'RouteDistance.dart';
 import 'package:location/location.dart';
 import 'FullMap.dart';
 import 'main.dart';
+import 'dart:typed_data';
+import 'dart:convert';
 
 class Volunteer extends StatefulWidget {
   final cardData;
-  final imageFile;
+  final image;
   final cardDescription;
   final coordinates;
   Volunteer({
     Key? key,
     this.cardData,
-    this.imageFile,
+    this.image,
     this.cardDescription,
     this.coordinates,
   }) : super(key: key);
@@ -35,6 +37,14 @@ class VolunteerState extends State<Volunteer> {
   double longitude = 0;
   String startPoint = '';
   String endPoint = '';
+
+  render_image() {
+    Uint8List bytes = base64Decode(widget.image);
+    return Image.memory(
+      bytes,
+      fit: BoxFit.fill,
+    );
+  }
 
   void _getLocation() async {
     final _locationData = await location.getLocation();
@@ -120,10 +130,16 @@ class VolunteerState extends State<Volunteer> {
                     Container(
                         height: 200,
                         width: 350,
+                        child: ClipRRect(
+                          child: render_image(),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
                         decoration: BoxDecoration(
+                          // ignore: prefer_const_constructors
                           color: Color.fromRGBO(0, 52, 36, 1),
                           borderRadius: BorderRadius.circular(20),
-                          // image: DecorationImage(image: ),
                         )),
                   ],
                 ),
