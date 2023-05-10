@@ -338,8 +338,8 @@ class localTrashState extends State<localTrash> {
     for (var value in widget.trashData.values) {
       if (value is Map<String, String>) {
         await _getDistance(_startPoint, value['coordinates']!);
-        if (distance < 10) {
-          if (count < 3)
+        if (count < 3) {
+          if (distance < 10)
             _cardList.add(
               RightCard(
                 cardData: "${value['location']!}",

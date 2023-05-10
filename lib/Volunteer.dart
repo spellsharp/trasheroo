@@ -145,25 +145,6 @@ class VolunteerState extends State<Volunteer> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                            onTap: () {
-                              print("map clicked");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapScreenWidget(
-                                          markerPoint: widget.coordinates,
-                                        )),
-                              );
-                            },
-                            child: Container(
-                                child: Text("Where is it?",
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(0, 52, 36, 1),
-                                        fontSize: 17,
-                                        decoration:
-                                            TextDecoration.underline)))),
-                        SizedBox(height: 20),
                         distance != null
                             ? Text(
                                 "$distance Km away",
@@ -193,6 +174,25 @@ class VolunteerState extends State<Volunteer> {
                                   }
                                 },
                               ),
+                        GestureDetector(
+                            onTap: () {
+                              print("map clicked");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapScreenWidget(
+                                          markerPoint: widget.coordinates,
+                                        )),
+                              );
+                            },
+                            child: Container(
+                                child: Text("Where is it?",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(0, 52, 36, 1),
+                                        fontSize: 17,
+                                        decoration:
+                                            TextDecoration.underline)))),
+                        // SizedBox(height: 20),
                         Text(
                           widget.cardData,
                           style: TextStyle(fontFamily: 'NTR', fontSize: 20),
