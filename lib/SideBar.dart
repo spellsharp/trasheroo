@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:trasheroo/Feedback.dart';
+import 'package:trasheroo/Login_Page.dart';
 import 'AboutUs.dart';
 
 class Sidebar extends StatefulWidget {
@@ -190,7 +192,11 @@ class _SidebarState extends State<Sidebar> {
                         color: Colors.white, fontFamily: 'NTR', fontSize: 25),
                   ),
                 ),
-                onTap: () => print("Logout"),
+                onTap: () => FirebaseAuth.instance.signOut().then((value) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  print("Signed Out");
+                }),
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/rendering.dart';
+import 'package:trasheroo/Registration_Page.dart';
 import 'HomePage.dart';
 import 'SideBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: buildMaterialColor(const Color.fromRGBO(11, 110, 79, 1)),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: RegistrationPage(),
     );
   }
 }
@@ -65,7 +66,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  
 
   Home _homePage = Home();
   static List<Widget> _widgetOptions = <Widget>[
