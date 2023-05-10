@@ -8,20 +8,40 @@ import 'postIssue.dart';
 import 'package:location/location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'RouteDistance.dart';
 
 class RightCard extends StatefulWidget {
   final cardData;
   final cardDescription;
   final coordinates;
-  const RightCard(
-      {Key? key, this.cardData, this.cardDescription, this.coordinates})
-      : super(key: key);
+  final id;
+  final image64;
+  RightCard({
+    Key? key,
+    this.cardData,
+    this.cardDescription,
+    this.coordinates,
+    this.id,
+    this.image64,
+  }) : super(key: key);
 
   @override
-  State<RightCard> createState() => _RightCardState();
+  State<RightCard> createState() => RightCardState();
 }
 
-class _RightCardState extends State<RightCard> {
+class RightCardState extends State<RightCard> {
+  render_image(imageEncoded) {
+    Uint8List bytes = base64Decode(imageEncoded);
+    return Image.memory(
+      bytes,
+      fit: BoxFit.cover,
+      height: 143.0,
+      width: 337.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -33,66 +53,105 @@ class _RightCardState extends State<RightCard> {
               cardData: widget.cardData,
               cardDescription: widget.cardDescription,
               coordinates: widget.coordinates,
+              image: widget.image64,
             ),
           ),
         );
+        // print(widget.image64);
       }),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Card(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Color.fromRGBO(0, 24, 2, 0.498),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Color.fromRGBO(0, 24, 2, 0.498),
+              ),
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Container(
-            height: 161,
-            width: 337,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: Color.fromRGBO(152, 183, 111, 0.8),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.cardData,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(33, 42, 24, 1),
-                                  fontSize: 18,
-                                  fontFamily: 'NTR')),
-                          SizedBox(width: 10),
-                          Text(widget.cardDescription,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(33, 42, 24, 1),
-                                  fontSize: 14,
-                                  fontFamily: 'NTR')),
-                          SizedBox(width: 10),
-                          Text(widget.coordinates,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(33, 42, 24, 1),
-                                  fontSize: 10,
-                                  fontFamily: 'NTR')),
-                        ],
+            child: Container(
+              height: 161,
+              width: 337,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Color.fromRGBO(152, 183, 111, 0.8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(145, 167, 141, 0.494),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(100),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
+                    child: Text(
+                      "#" + widget.id,
+                      style: TextStyle(
+                        color: Color.fromRGBO(33, 42, 24, 1),
+                        fontSize: 10,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                  Stack(
+                    children: [
+                      Opacity(
+                        opacity: 0.3,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                          child: render_image(widget.image64),
+                        ),
+                      ),
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: 10),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 5),
+                                Text(
+                                  widget.cardData,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(33, 42, 24, 1),
+                                      fontSize: 20,
+                                      fontFamily: 'NTR'),
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  widget.cardDescription,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(33, 42, 24, 1),
+                                      fontSize: 16,
+                                      fontFamily: 'NTR'),
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  widget.coordinates,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(33, 42, 24, 1),
+                                      fontSize: 12,
+                                      fontFamily: 'NTR'),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }
@@ -108,15 +167,6 @@ class DottedBox extends StatefulWidget {
 class _DottedBoxState extends State<DottedBox> {
   Location location = new Location();
   String coordinate_trash = '';
-  void _getLocation() async {
-    final _locationData = await location.getLocation();
-    setState(() {
-      final latitude = _locationData.latitude;
-      final longitude = _locationData.longitude;
-      final coordinate_trash = '$longitude,$latitude';
-    });
-  }
-
   File? imageFile;
   void _getFromCamera() async {
     XFile? pickedFile = await ImagePicker().pickImage(
@@ -130,7 +180,6 @@ class _DottedBoxState extends State<DottedBox> {
         imageFile = File(pickedFile.path);
       });
 
-      // Navigate to a new page after selecting a photo
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -165,16 +214,12 @@ class _DottedBoxState extends State<DottedBox> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // _getFromCamera();
-        // print("Camera Clicked");
-
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
               title: Text('Choose Image Source'),
               content: SingleChildScrollView(
                 child: ListBody(
@@ -198,7 +243,6 @@ class _DottedBoxState extends State<DottedBox> {
       child: DottedBorder(
         strokeWidth: 4,
         borderType: BorderType.RRect,
-        // radius: const Radius.circular(12),
         padding: const EdgeInsets.all(10),
         color: const Color.fromRGBO(89, 90, 74, 1),
         dashPattern: const [9, 9],
@@ -243,63 +287,75 @@ class _DottedBoxState extends State<DottedBox> {
 }
 
 class localTrash extends StatefulWidget {
-  const localTrash({Key? key}) : super(key: key);
+  final trashData;
+  final coordinates;
+  const localTrash({Key? key, this.trashData, this.coordinates})
+      : super(key: key);
   @override
   State<localTrash> createState() => localTrashState();
 }
 
 class localTrashState extends State<localTrash> {
-  late String heading;
-  late String cardData;
-  Map<String, Map<String, String>> _cardData = {
-    'Card 1': {
-      'Location': 'Kannur',
-      'Description': 'Some description for Card 1',
-      'Coordinate': '75.3704,11.8745',
-    },
-    'Card 2': {
-      'Location': 'Amritapuri',
-      'Description': 'Some description for Card 2',
-      'Coordinate': '76.4896,9.0949',
-    },
-    'Card 3': {
-      'Location': 'Chennai',
-      'Description': 'Some description for Card 3',
-      'Coordinate': '80.2707,13.0827',
-    },
-    'Card 4': {
-      'Location': 'Mahe',
-      'Description': 'Some description for Card 4',
-      'Coordinate': '75.5343,11.7002',
-    },
-    'Card 5': {
-      'Location': 'Ernakulam',
-      'Description': 'Some description for Card 5',
-      'Coordinate': '76.2999,9.9816',
-    },
-  };
+  Location location = new Location();
+  LocationData? _locationData;
 
-  List<Widget> _cardDisplay() {
-    List<Widget> cardList = [];
+  List<Widget> _cardList = [];
+  String _startPoint = '';
+  String _endPoint = '';
 
-    _cardData.forEach((key, value) {
-      if (value is Map<String, String>) {
-        cardList.add(RightCard(
-          cardData: "${value['Location']}",
-          cardDescription: "${value['Description']}",
-          coordinates: "${value['Coordinate']}",
-        ));
-      } else {
-        cardList.add(RightCard(cardData: value));
-      }
+  Future<void> _getLocation() async {
+    try {
+      _locationData = await location.getLocation();
+      setState(() {
+        final latitude = _locationData?.latitude ?? 0.0;
+        final longitude = _locationData?.longitude ?? 0.0;
+        _startPoint = '$longitude,$latitude';
+        _endPoint = widget.coordinates;
+      });
+    } catch (e) {
+      print('Could not get location: $e');
+    }
+  }
+
+  String title = '';
+  String details = '';
+  var distance = 0.0;
+
+  Future<void> _getDistance(String start, String end) async {
+    final distance1 = await getRouteDistance(start, end);
+    setState(() {
+      distance = distance1;
     });
+    print(distance);
+  }
 
-    return cardList;
+  Future<void> _cardDisplayHelper() async {
+    await _getLocation();
+    var count = 0;
+    for (var value in widget.trashData.values) {
+      if (value is Map<String, String>) {
+        await _getDistance(_startPoint, value['coordinates']!);
+        if (distance < 10) {
+          if (count < 3)
+            _cardList.add(
+              RightCard(
+                cardData: "${value['location']!}",
+                cardDescription: "${value['description']!}",
+                coordinates: "${value['coordinates']!}",
+                id: "${value['id']!}",
+                image64: "${value['image']!}",
+              ),
+            );
+          count++;
+        }
+      }
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    _cardDisplayHelper();
   }
 
   @override
@@ -322,32 +378,21 @@ class localTrashState extends State<localTrash> {
             ),
           ),
         ),
-        ..._cardDisplay()
+        ..._cardList,
       ],
     );
   }
 }
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
-
+  final data;
+  Home({Key? key, this.data}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Explore Page'),
-    Text('Profile Page'),
-  ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -358,14 +403,11 @@ class _HomeState extends State<Home> {
     final double appBarHeight = AppBar().preferredSize.height;
     return Scaffold(
       key: _scaffoldKey,
-      // backgroundColor: Color.fromARGB(49, 255, 255, 255),
       backgroundColor: Color.fromRGBO(243, 255, 166, 1),
-
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          // crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             const Text(
               'Trasheroo',
@@ -399,37 +441,41 @@ class _HomeState extends State<Home> {
         child: Sidebar(),
       ),
       body: SingleChildScrollView(
-        child: Stack(children: [
-          Column(
-            children: [
-              Container(
-                height: kToolbarHeight + 25,
-              ),
-              Row(
-                children: [
-                  SizedBox(width: 8.5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 25.0),
-                        child: DottedBox(),
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 20,
-                          ),
-                          localTrash(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ]),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Container(
+                  height: kToolbarHeight + 25,
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 8.5),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 25.0),
+                          child: DottedBox(),
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            localTrash(
+                              trashData: widget.data,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

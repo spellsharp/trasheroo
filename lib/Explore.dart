@@ -163,16 +163,6 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
   final TextEditingController _searchController = TextEditingController();
   late String heading;
   late String cardData;

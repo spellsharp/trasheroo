@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Home _homePage = Home();
         setState(() {
           _widgetOptions = <Widget>[
-            Home(),
+            Home(data: postDataMap),
             Explore(postDataMap: postDataMap),
             Profile(),
           ];

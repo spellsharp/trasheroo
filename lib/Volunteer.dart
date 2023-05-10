@@ -54,9 +54,6 @@ class VolunteerState extends State<Volunteer> {
       startPoint = '$longitude,$latitude';
       endPoint = widget.coordinates;
     });
-    print("==============");
-    print(startPoint);
-    print("==============");
     _getDistance();
   }
 
