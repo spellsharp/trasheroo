@@ -372,23 +372,16 @@ class localTrashState extends State<localTrash> {
             height: 38,
             width: 285,
           ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Trash near you",
-              style: TextStyle(
-                fontSize: 35,
-                fontFamily: 'NTR',
-                color: Color.fromRGBO(0, 0, 0, 1),
-              ),
+          Text(
+            "Trash near you",
+            style: TextStyle(
+              fontSize: 35,
+              fontFamily: 'NTR',
+              color: Color.fromRGBO(0, 0, 0, 1),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-            ],
-          ),
+          Container(width: 340),
+          CircularProgressIndicator(),
         ],
       );
     } else {
