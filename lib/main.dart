@@ -69,10 +69,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Map<String, Map<String, String>> postDataMap = {};
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _isLoading = true;
     get_postIssue();
   }
 
@@ -103,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
         });
         Home _homePage = Home();
         setState(() {
+          _isLoading = false;
           _widgetOptions = <Widget>[
             Home(data: postDataMap),
             Explore(postDataMap: postDataMap),
@@ -127,82 +130,98 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final double appBarHeight = AppBar().preferredSize.height;
     // bool isDrawerOpen = _homePage.isDrawerOpen();
-    return RefreshIndicator(
-      onRefresh: () async {
-        await Future.delayed(Duration(milliseconds: 1500));
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => super.widget));
-      },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Color.fromRGBO(243, 255, 166, 1),
-          bottomNavigationBar: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-            ),
-            height: 87,
-            child: ClipRRect(
-              child: BottomNavigationBar(
-                elevation: 30.0,
-                backgroundColor: Color.fromRGBO(11, 110, 79, 0.9),
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
-                                color: Color.fromARGB(255, 255, 255, 255))),
-                        child: Icon(
-                          Icons.home,
-                          size: 42,
-                          color: Colors.white,
-                        )),
-                    label: 'Home',
+    if (_isLoading) {
+      return Container(
+        color: Colors.white,
+        child: Center(
+          child: Image.asset(
+            'assets/Logo.png',
+            width: 500,
+            height: 500,
+          ),
+        ),
+      );
+    } else {
+      return RefreshIndicator(
+        onRefresh: () async {
+          await Future.delayed(Duration(milliseconds: 1500));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => super.widget));
+        },
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Color.fromRGBO(243, 255, 166, 1),
+            bottomNavigationBar: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(30)),
+              ),
+              height: 87,
+              child: ClipRRect(
+                child: BottomNavigationBar(
+                  elevation: 30.0,
+                  backgroundColor: Color.fromRGBO(11, 110, 79, 0.9),
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 255, 255, 255))),
+                          child: Icon(
+                            Icons.home,
+                            size: 42,
+                            color: Colors.white,
+                          )),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 255, 255, 255))),
+                          child: Icon(
+                            Icons.explore,
+                            size: 42,
+                            color: Colors.white,
+                          )),
+                      label: 'Explore',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 255, 255, 255))),
+                          child: Icon(
+                            Icons.person,
+                            size: 42,
+                            color: Colors.white,
+                          )),
+                      label: 'Profile',
+                    ),
+                  ],
+                  currentIndex: _selectedIndex,
+                  unselectedLabelStyle: TextStyle(
+                      color: Color.fromARGB(255, 107, 107, 107),
+                      fontWeight: FontWeight.w500),
+                  selectedLabelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
                   ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
-                                color: Color.fromARGB(255, 255, 255, 255))),
-                        child: Icon(
-                          Icons.explore,
-                          size: 42,
-                          color: Colors.white,
-                        )),
-                    label: 'Explore',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
-                                color: Color.fromARGB(255, 255, 255, 255))),
-                        child: Icon(
-                          Icons.person,
-                          size: 42,
-                          color: Colors.white,
-                        )),
-                    label: 'Profile',
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                unselectedLabelStyle: TextStyle(
-                    color: Color.fromARGB(255, 107, 107, 107),
-                    fontWeight: FontWeight.w500),
-                selectedLabelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
+                  selectedItemColor: Color.fromARGB(255, 255, 255, 255),
+                  onTap: _onItemTapped,
                 ),
-                selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-                onTap: _onItemTapped,
               ),
             ),
+            body: _widgetOptions[_selectedIndex],
           ),
-          body: _widgetOptions[_selectedIndex],
         ),
-      ),
-    );
+      );
+    }
   }
 }

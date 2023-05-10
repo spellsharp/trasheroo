@@ -109,9 +109,6 @@ class VolunteerState extends State<Volunteer> {
                 ),
               ],
             ),
-            // shape: const RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-            // ),
             toolbarHeight: 73,
           ),
           body: SingleChildScrollView(

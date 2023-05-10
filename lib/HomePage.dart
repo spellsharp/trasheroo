@@ -302,6 +302,7 @@ class localTrashState extends State<localTrash> {
   List<Widget> _cardList = [];
   String _startPoint = '';
   String _endPoint = '';
+  bool isLoading = false;
 
   Future<void> _getLocation() async {
     try {
@@ -311,6 +312,7 @@ class localTrashState extends State<localTrash> {
         final longitude = _locationData?.longitude ?? 0.0;
         _startPoint = '$longitude,$latitude';
         _endPoint = widget.coordinates;
+        isLoading = true;
       });
     } catch (e) {
       print('Could not get location: $e');
@@ -325,6 +327,7 @@ class localTrashState extends State<localTrash> {
     final distance1 = await getRouteDistance(start, end);
     setState(() {
       distance = distance1;
+      isLoading = false;
     });
     print(distance);
   }
@@ -354,33 +357,63 @@ class localTrashState extends State<localTrash> {
 
   @override
   void initState() {
+    isLoading = true;
     super.initState();
     _cardDisplayHelper();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: 38,
-          width: 285,
-        ),
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Trash near you",
-            style: TextStyle(
-              fontSize: 35,
-              fontFamily: 'NTR',
-              color: Color.fromRGBO(0, 0, 0, 1),
+    if (isLoading) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 38,
+            width: 285,
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Trash near you",
+              style: TextStyle(
+                fontSize: 35,
+                fontFamily: 'NTR',
+                color: Color.fromRGBO(0, 0, 0, 1),
+              ),
             ),
           ),
-        ),
-        ..._cardList,
-      ],
-    );
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+            ],
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 38,
+            width: 285,
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Trash near you",
+              style: TextStyle(
+                fontSize: 35,
+                fontFamily: 'NTR',
+                color: Color.fromRGBO(0, 0, 0, 1),
+              ),
+            ),
+          ),
+          ..._cardList,
+        ],
+      );
+    }
   }
 }
 
@@ -444,13 +477,14 @@ class _HomeState extends State<Home> {
         child: Stack(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   height: kToolbarHeight + 25,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(width: 8.5),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -470,6 +504,7 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
+                    SizedBox(width: 15),
                   ],
                 ),
               ],
