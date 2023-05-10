@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:trasheroo/Volunteer.dart';
 import 'postIssue.dart';
 import 'package:location/location.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class RightCard extends StatefulWidget {
   final cardData;
@@ -334,6 +336,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
@@ -370,17 +374,20 @@ class _HomeState extends State<Home> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/Logo.png'),
-                radius: 35,
-                backgroundColor: Colors.transparent,
+              child: GestureDetector(
+                onTap: () {
+                  print("pressed logo");
+
+                },
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/Logo.png'),
+                  radius: 35,
+                  backgroundColor: Colors.transparent,
+                ),
               ),
             )
           ],
         ),
-        // shape: const RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-        // ),
         toolbarHeight: 73,
       ),
       drawer: Theme(
@@ -391,8 +398,6 @@ class _HomeState extends State<Home> {
       ),
       body: SingleChildScrollView(
         child: Stack(children: [
-          // Opacity(opacity: 0.2, child: Image.asset('assets/BG.png')),
-          // Opacity(opacity: 0.2, child: Image.asset('assets/climberNoBG.jpg')),
           Column(
             children: [
               Container(

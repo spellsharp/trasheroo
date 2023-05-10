@@ -2,6 +2,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'Volunteer.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ExploreCard extends StatefulWidget {
   final cardData;
@@ -98,7 +99,7 @@ class _ExploreCardState extends State<ExploreCard> {
 }
 
 class Explore extends StatefulWidget {
-  const Explore({super.key});
+  Explore({Key? key});
 
   @override
   State<Explore> createState() => _ExploreState();
@@ -108,6 +109,8 @@ class _ExploreState extends State<Explore> {
   final TextEditingController _searchController = TextEditingController();
   late String heading;
   late String cardData;
+  late String cardDescription;
+
   Map<String, Map<String, String>> _cardData = {
     'Card 1': {
       'Location': 'Kannur',

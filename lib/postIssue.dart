@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:trasheroo/main.dart';
 import 'dart:io';
+import 'dart:convert';
 import 'HomePage.dart';
 import 'Map.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'main.dart';
+import 'package:location/location.dart';
 
 class PostIssue extends StatefulWidget {
   final File? imageFile;
@@ -14,9 +19,51 @@ class PostIssue extends StatefulWidget {
 }
 
 class _PostIssueState extends State<PostIssue> {
+  final Location location = Location();
+  LocationData? currentLocation;
+  String coordinates = '';
+
+  void getCurrentLocation() async {
+    try {
+      currentLocation = await location.getLocation();
+      setState(() {
+        coordinates =
+            '${currentLocation?.latitude}, ${currentLocation?.longitude}';
+      });
+      print("====================================");
+      print(coordinates);
+      print("====================================");
+    } catch (e) {
+      print("====================================");
+      print('Could not get location: $e');
+      print("====================================");
+    }
+  }
+
+  final database = FirebaseDatabase.instance.ref();
   String title = '';
   String details = '';
-  void _submitIssue() {}
+  String image = '';
+
+  @override
+  void initState() {
+    if (widget.imageFile != null) {
+      List<int> imageBytes = widget.imageFile!.readAsBytesSync();
+      image = base64Encode(imageBytes);
+    }
+    getCurrentLocation();
+    super.initState();
+  }
+
+  void insertData(
+      String subject, String body, String image, String coordinates) {
+    database.child("postIssue").push().set({
+      'subject': subject,
+      'body': body,
+      'image': image,
+      'co-ordinates': coordinates,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,10 +158,13 @@ class _PostIssueState extends State<PostIssue> {
               ElevatedButton(
                 onPressed: (() {
                   print("Post Button clicked");
-                  _submitIssue();
+                  insertData(title, details, image, coordinates);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(
+                        builder: (context) => MyHomePage(
+                              title: 'postIssuetest',
+                            )),
                   );
                 }),
                 child: Text(

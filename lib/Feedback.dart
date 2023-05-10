@@ -16,6 +16,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   String subject = '';
 
   String body = '';
+  
 
   void _launchEmailApp() async {
     final Uri params = Uri(

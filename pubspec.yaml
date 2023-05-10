@@ -54,6 +54,8 @@ dependencies:
   flutter_osm_plugin: ^0.53.2
   latlong: ^0.6.1
   http: ^0.13.5
+  firebase_core: ^1.24.0
+  firebase_database: ^9.1.7
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.1
