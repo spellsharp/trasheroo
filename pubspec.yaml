@@ -32,11 +32,11 @@ dependencies:
   flutter:
     sdk: flutter
   drop_shadow: ^0.1.0
-  cloud_firestore: ^3.1.5
+  cloud_firestore: ^4.6.0
   font_awesome_flutter: ^10.4.0
   url_launcher: ^6.1.8
   path_provider: ^2.0.14
-  firebase_auth: ^3.3.4
+  firebase_auth: ^4.5.0
 
 
 
@@ -52,13 +52,12 @@ dependencies:
   table_calendar: ^3.0.8
   location: ^4.4.0
   flutter_osm_plugin: ^0.53.2
-  latlong: ^0.6.1
   http: ^0.13.5
-  firebase_core: ^1.24.0
-  firebase_database: ^9.1.7
+  firebase_core: ^2.11.0
+  firebase_database: ^10.1.2
 
 dependency_overrides:
-  firebase_core_platform_interface: 4.5.1
+  firebase_core_platform_interface: 4.7.0
   
 dev_dependencies:
   flutter_test:
