@@ -123,7 +123,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               hintText: 'Username',
                               hintStyle:
                                   TextStyle(fontSize: 15, fontFamily: 'NTR'),
-                              prefixIcon: Icon(Icons.person_2_rounded),
+                              prefixIcon: Icon(Icons.person),
                             ),
                             textAlign: TextAlign.start,
                           ),

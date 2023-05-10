@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/rendering.dart';
-import 'package:trasheroo/Registration_Page.dart';
 import 'HomePage.dart';
 import 'SideBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   runApp(const MyApp());
 }
 
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: buildMaterialColor(const Color.fromRGBO(11, 110, 79, 1)),
       ),
-      home: RegistrationPage(),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -65,14 +65,57 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late DatabaseReference _groupRef;
+  Map<String, Map<String, String>> postDataMap = {};
   int _selectedIndex = 0;
+  List<Widget> _widgetOptions = [];
 
-  Home _homePage = Home();
-  static List<Widget> _widgetOptions = <Widget>[
-    Home(),
-    Explore(),
-    Profile(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    get_postIssue();
+  }
+
+  get_postIssue() async {
+    String description = '';
+    String location = '';
+    String imageEncoded = '';
+    _groupRef = FirebaseDatabase.instance.ref().child('postIssue');
+    _groupRef.onValue.listen((DatabaseEvent event) {
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> groupData =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        print("==================================");
+        groupData.forEach((key, value) {
+          Map<String, String> postData = {
+            'id': key,
+            'location': value['subject'],
+            'description': value['body'],
+            'coordinates': value['co-ordinates'],
+            'image': value['image'],
+          };
+          print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+          print(key);
+          print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+          postDataMap[key] = postData;
+          print(postDataMap);
+          print("==================================");
+        });
+        Home _homePage = Home();
+        setState(() {
+          _widgetOptions = <Widget>[
+            Home(),
+            Explore(postDataMap: postDataMap),
+            Profile(),
+          ];
+        });
+      } else {
+        print("Fuck");
+      }
+    });
+
+    return description;
+  }
 
   void _onItemTapped(int index) {
     setState(() {

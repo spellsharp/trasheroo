@@ -28,7 +28,7 @@ class _PostIssueState extends State<PostIssue> {
       currentLocation = await location.getLocation();
       setState(() {
         coordinates =
-            '${currentLocation?.latitude}, ${currentLocation?.longitude}';
+            '${currentLocation?.longitude},${currentLocation?.latitude}';
       });
       print("====================================");
       print(coordinates);

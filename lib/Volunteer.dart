@@ -87,10 +87,7 @@ class VolunteerState extends State<Volunteer> {
       },
       child: SafeArea(
         child: Scaffold(
-          // backgroundColor: const Color.fromRGBO(243, 255, 166, 1),
-          // backgroundColor: Color.fromARGB(48, 136, 255, 0),
           backgroundColor: Color.fromRGBO(243, 255, 166, 1),
-
           appBar: AppBar(
             titleSpacing: 0,
             title: Row(
@@ -150,18 +147,20 @@ class VolunteerState extends State<Volunteer> {
                               );
                             },
                             child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                  color: Color.fromARGB(255, 0, 97, 50),
-                                  width: 4,
-                                )),
-                                child: Map())),
+                                child: Text("Where is it?",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(0, 52, 36, 1),
+                                        fontSize: 17,
+                                        decoration:
+                                            TextDecoration.underline)))),
                         SizedBox(height: 20),
                         distance != null
                             ? Text(
                                 "$distance Km away",
-                                style:
-                                    TextStyle(fontFamily: 'NTR', fontSize: 20),
+                                style: TextStyle(
+                                  fontFamily: 'NTR',
+                                  fontSize: 20,
+                                ),
                               )
                             : FutureBuilder(
                                 future: Future(() async {

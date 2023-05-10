@@ -336,8 +336,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
@@ -348,6 +346,11 @@ class _HomeState extends State<Home> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -377,7 +380,6 @@ class _HomeState extends State<Home> {
               child: GestureDetector(
                 onTap: () {
                   print("pressed logo");
-
                 },
                 child: CircleAvatar(
                   backgroundImage: AssetImage('assets/Logo.png'),
