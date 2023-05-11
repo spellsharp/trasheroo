@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:drop_shadow/drop_shadow.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
   @override
-  ProfileState createState() => ProfileState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class ProfileState extends State<Profile> {
-  TextEditingController nameController = TextEditingController();
+class _ProfileState extends State<Profile> {
+  String username = 'ByteForge';
+  String email = 'byte@forge.com';
+  String profilePic = '';
   String about = 'Save Earth';
   bool isEditing = false;
-  final int nameLimit = 70;
+  TextEditingController nameController = TextEditingController();
   File? image;
 
   Future pickImage() async {
@@ -29,6 +31,16 @@ class ProfileState extends State<Profile> {
     }
   }
 
+  final int nameLimit = 70;
+  void toggleEdit() {
+    setState(() {
+      isEditing = !isEditing;
+      if (!isEditing) {
+        about = nameController.text;
+      }
+    });
+  }
+
   Future pickImageC() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -43,21 +55,6 @@ class ProfileState extends State<Profile> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    nameController.text = about;
-  }
-
-  void toggleEdit() {
-    setState(() {
-      isEditing = !isEditing;
-      if (!isEditing) {
-        about = nameController.text;
-      }
-    });
-  }
-
   Widget buildabout() {
     if (isEditing) {
       return Row(
@@ -67,7 +64,7 @@ class ProfileState extends State<Profile> {
               controller: nameController,
               maxLength: nameLimit,
               decoration: const InputDecoration(
-                hintText: 'About ',
+                hintText: 'About',
               ),
             ),
           ),
@@ -108,204 +105,187 @@ class ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(243, 255, 166, 1),
-      body: Column(
-        children: [
-          Container(height: 50),
-          Container(
-            child: Stack(
-              children: [
-                if (image == null)
-                  CircleAvatar(
-                    radius: 77,
-                    backgroundColor: Colors.black26,
-                    child: const CircleAvatar(
-                      radius: 75,
-                      backgroundColor: Colors.white70,
-                      child: Icon(Icons.person, size: 75),
-                    ),
-                  )
-                else
-                  CircleAvatar(
-                    radius: 78,
-                    backgroundColor: Colors.black38,
-                    child: CircleAvatar(
-                      radius: 75,
-                      backgroundColor: Colors.white70,
-                      child: ClipOval(
-                        child: Image.file(
-                          image!,
-                          width: 150,
-                          height: 150,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.error),
-                        ),
-                      ),
-                    ),
-                  ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 32.0),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                title: Text('Choose Image Source'),
-                                content: SingleChildScrollView(
-                                  child: ListBody(
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        child: Text('Camera'),
-                                        onTap: () => pickImageC(),
-                                      ),
-                                      Padding(padding: EdgeInsets.all(8.0)),
-                                      GestureDetector(
-                                        child: Text('Gallery'),
-                                        onTap: () => pickImage(),
-                                      ),
-                                    ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 90.0,
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(0, 128, 90, 1),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5))),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            title: Text('Choose Image Source'),
+                            content: SingleChildScrollView(
+                              child: ListBody(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    child: Text('Camera'),
+                                    onTap: () => pickImageC(),
                                   ),
-                                ),
-                              );
-                            },
+                                  Padding(padding: EdgeInsets.all(8.0)),
+                                  GestureDetector(
+                                    child: Text('Gallery'),
+                                    onTap: () => pickImage(),
+                                  ),
+                                ],
+                              ),
+                            ),
                           );
                         },
-                        child: const CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Color(0xB30CAD7B),
-                          child: Icon(
-                            Icons.camera_alt_sharp,
-                            color: Colors.white,
+                      );
+                    },
+                    child: Stack(
+                      children: [
+                        if (image == null)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              radius: 55,
+                              backgroundColor: Colors.black26,
+                              child: const CircleAvatar(
+                                radius: 45,
+                                backgroundColor: Colors.white70,
+                                child: Icon(Icons.person, size: 60),
+                              ),
+                            ),
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              radius: 55,
+                              backgroundColor: Colors.black38,
+                              child: CircleAvatar(
+                                radius: 55,
+                                backgroundColor: Colors.white70,
+                                backgroundImage: FileImage(image!),
+                              ),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(height: 30),
-          Expanded(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Color.fromRGBO(12, 48, 15, 0.498),
-                  ),
-                  // borderRadius: BorderRadius.only(
-                  //     topLeft: Radius.circular(50.0),
-                  //     topRight: Radius.circular(50.0),
-                  //   ),
-                  borderRadius: BorderRadius.circular(50)),
-              color: Color.fromRGBO(152, 183, 111, 1),
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50.0),
-                    topRight: Radius.circular(50.0),
-                  ),
-                  // color: Color.fromARGB(70, 86, 119, 42),
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
+                  SizedBox(width: 10),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 25),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40.0, top: 10),
-                        child: Container(
-                          child: const Text(
-                            'Username',
-                            style: TextStyle(
-                              fontFamily: 'NTR',
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
+                      Text(
+                        "ByteForge",
+                        style: TextStyle(
+                          fontSize: 22,
+                          height: 1.4,
+                          fontFamily: 'NTR',
+                          color: Color.fromRGBO(255, 255, 255, 1),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40.0, bottom: 20),
-                        child: Container(
-                          child: const Text(
-                            'ByteForge', // backend
-                            style: TextStyle(
-                              fontFamily: 'NTR',
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontSize: 25,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
+                      Text(
+                        "byte@forge.com",
+                        style: TextStyle(
+                          height: 1.4,
+                          fontSize: 17,
+                          fontFamily: 'NTR',
+                          color: Color.fromRGBO(255, 255, 255, 1),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40.0),
-                        child: Container(
-                          child: const Text(
-                            'About',
-                            style: TextStyle(
-                              fontFamily: 'NTR',
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40.0, bottom: 20),
-                        child: Container(
-                          child: SizedBox(
-                              width: double.infinity, child: buildabout()),
-                        ),
-                      ),
-                      // SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40.0),
-                        child: Container(
-                          child: const Text(
-                            'Email Address',
-                            style: TextStyle(
-                              fontFamily: 'NTR',
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40.0),
-                        child: Container(
-                          child: const Text(
-                            'byte@forge.com',
-                            style: TextStyle(
-                              fontFamily: 'NTR',
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontSize: 25,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ),
-                      // SizedBox(height: 58)
                     ],
                   ),
-                ),
+                ],
               ),
             ),
-          ),
-        ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                const Padding(
+                  padding:
+                      const EdgeInsets.only(left: 16.0, top: 8.0, right: 10.0),
+                  child: Text(
+                    "About",
+                    style: TextStyle(
+                      height: 1.4,
+                      fontSize: 20,
+                      fontFamily: 'NTR',
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 16.0, right: 20.0, bottom: 10.0),
+                  child: Container(color: Colors.black38, height: 1.5),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Container(
+                    child:
+                        SizedBox(width: double.infinity, child: buildabout()),
+                  ),
+                ),
+                SizedBox(height: 40),
+                const Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text("My Posts",
+                      style: TextStyle(
+                        height: 1.4,
+                        fontSize: 20,
+                        fontFamily: 'NTR',
+                        color: Color.fromRGBO(0, 0, 0, 1),
+                      )),
+                ),
+                // ..._buildPosts(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 24.0),
+                  child: Card(
+                    child: Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 96, 125, 75),
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text("Volunteered Posts",
+                      style: TextStyle(
+                        height: 1.4,
+                        fontSize: 20,
+                        fontFamily: 'NTR',
+                        color: Color.fromRGBO(0, 0, 0, 1),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 24.0),
+                  child: Card(
+                    child: Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 96, 125, 75),
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                  ),
+                ),
+                // ..._buildVolunteers(),
+                SizedBox(height: 40),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
