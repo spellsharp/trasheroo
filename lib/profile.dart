@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:drop_shadow/drop_shadow.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Profile extends StatefulWidget {
+  final vdata;
+  final pdata;
+  Profile({Key? key, this.vdata, this.pdata}) : super(key: key);
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -255,6 +259,7 @@ class _ProfileState extends State<Profile> {
                       decoration: BoxDecoration(
                           color: Color.fromARGB(255, 96, 125, 75),
                           borderRadius: BorderRadius.circular(5)),
+                      child: Text(widget.pdata.toString()),
                     ),
                   ),
                 ),
@@ -276,6 +281,7 @@ class _ProfileState extends State<Profile> {
                       decoration: BoxDecoration(
                           color: Color.fromARGB(255, 96, 125, 75),
                           borderRadius: BorderRadius.circular(5)),
+                      child: Text(widget.vdata.toString()),
                     ),
                   ),
                 ),

@@ -9,14 +9,10 @@ import 'package:location/location.dart';
 import 'FullMap.dart';
 import 'main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'dart:typed_data';
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class Volunteer extends StatefulWidget {
   final cardData;

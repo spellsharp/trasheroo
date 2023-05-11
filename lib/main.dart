@@ -11,6 +11,7 @@ import 'profile.dart';
 import 'Explore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'Login_Page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,15 @@ class MyApp extends StatelessWidget {
     return MaterialColor(color.value, swatch);
   }
 
+  func() {
+    final user = FirebaseAuth.instance.currentUser;
+    bool isuserloggedin = false;
+    if (user != null) {
+      isuserloggedin = true;
+    }
+    return (isuserloggedin);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,7 +62,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: buildMaterialColor(const Color.fromRGBO(11, 110, 79, 1)),
       ),
-      home: RegistrationPage(),
+      home: func() ? MyHomePage(title: "Oombu") : LoginPage(),
     );
   }
 }
@@ -76,7 +86,78 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _isLoading = true;
+    _getVolunteerIssue();
+    _getPostIssue();
     get_postIssue();
+  }
+
+  late DatabaseReference groupRef1;
+  Map<String, Map<String, String>> volunteerDataMap = {};
+  _getVolunteerIssue() async {
+    String description = '';
+    String location = '';
+    String imageEncoded = '';
+    groupRef1 = FirebaseDatabase.instance.ref().child('Volunteer Data');
+    groupRef1.onValue.listen((DatabaseEvent event) {
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> groupData =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        groupData.forEach((key, value) {
+          Map<String, String> volunteerData = {
+            'time': value['time'],
+            'e-mail': value['e-mail'],
+            'issueID': value['issueID'],
+          };
+          if (FirebaseAuth.instance.currentUser!.email == value['e-mail']) {
+            volunteerDataMap[key] = volunteerData;
+
+            print("==================================");
+            print("volunteer");
+
+            print(volunteerDataMap);
+            print("==================================");
+          }
+        });
+      } else {
+        print("Fuck");
+      }
+    });
+
+    return description;
+  }
+
+  late DatabaseReference groupRef2;
+  Map<String, Map<String, String>> postedDataMap = {};
+  _getPostIssue() async {
+    String description = '';
+    String location = '';
+    String imageEncoded = '';
+    groupRef2 = FirebaseDatabase.instance.ref().child('postIssue');
+    groupRef2.onValue.listen((DatabaseEvent event) {
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> groupData =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        groupData.forEach((key, value) {
+          Map<String, String> postedData = {
+            'body': value['body'],
+            'co-ordinates': value['co-ordinates'],
+            'subject': value['subject'],
+          };
+          if (FirebaseAuth.instance.currentUser!.email == value['user-email']) {
+            postedDataMap[key] = postedData;
+            print("==================================");
+            print("post");
+
+            print(postedDataMap);
+            print("==================================");
+          }
+        });
+      } else {
+        print("Fuck");
+      }
+    });
+
+    return description;
   }
 
   get_postIssue() async {
@@ -88,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (event.snapshot.value != null) {
         Map<dynamic, dynamic> groupData =
             event.snapshot.value as Map<dynamic, dynamic>;
-        print("==================================");
+        // print("==================================");
         groupData.forEach((key, value) {
           Map<String, String> postData = {
             'id': key,
@@ -97,12 +178,12 @@ class _MyHomePageState extends State<MyHomePage> {
             'coordinates': value['co-ordinates'],
             'image': value['image'],
           };
-          print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-          print(key);
-          print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-          postDataMap[key] = postData;
-          print(postDataMap);
-          print("==================================");
+          // print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+          // print(key);
+          // print("kkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+          // postDataMap[key] = postData;
+          // print(postDataMap);
+          // print("==================================");
         });
         Home _homePage = Home();
         setState(() {
@@ -110,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _widgetOptions = <Widget>[
             Home(data: postDataMap),
             Explore(postDataMap: postDataMap),
-            Profile(),
+            Profile(vdata: volunteerDataMap, pdata: postedDataMap),
           ];
         });
       } else {
@@ -120,7 +201,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return description;
   }
-  
 
   void _onItemTapped(int index) {
     setState(() {

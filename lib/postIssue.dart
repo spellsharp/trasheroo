@@ -7,6 +7,7 @@ import 'Map.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'main.dart';
 import 'package:location/location.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PostIssue extends StatefulWidget {
   final File? imageFile;
@@ -22,6 +23,9 @@ class _PostIssueState extends State<PostIssue> {
   final Location location = Location();
   LocationData? currentLocation;
   String coordinates = '';
+
+
+  
 
   void getCurrentLocation() async {
     try {
@@ -62,6 +66,7 @@ class _PostIssueState extends State<PostIssue> {
       'body': body,
       'image': image,
       'co-ordinates': coordinates,
+      'user-email': FirebaseAuth.instance.currentUser!.email,
     });
   }
 
@@ -134,7 +139,7 @@ class _PostIssueState extends State<PostIssue> {
                   },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Subject',
+                    hintText: 'Location(with Landmark)',
                     fillColor: Colors.white,
                   ),
                 ),
@@ -151,7 +156,7 @@ class _PostIssueState extends State<PostIssue> {
                   minLines: 5,
                   maxLines: null,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(), hintText: 'Body'),
+                      border: OutlineInputBorder(), hintText: 'Description'),
                 ),
               ),
               SizedBox(height: 30),
