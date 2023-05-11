@@ -48,6 +48,7 @@ class _ExploreCardState extends State<ExploreCard> {
               cardDescription: widget.cardDescription,
               coordinates: widget.coordinates,
               image: widget.image64,
+              id: widget.id,
             ),
           ),
         );
@@ -168,34 +169,6 @@ class _ExploreState extends State<Explore> {
   late String cardData;
   late String cardDescription;
 
-  // Map<String, Map<String, String>> _cardData = {
-  //   'Card 1': {
-  //     'Location': 'Kannur',
-  //     'Description': 'Some description for Card 1',
-  //     'Coordinate': '75.3704,11.8745',
-  //   },
-  //   'Card 2': {
-  //     'Location': 'Amritapuri',
-  //     'Description': 'Some description for Card 2',
-  //     'Coordinate': '76.4896,9.0949',
-  //   },
-  //   'Card 3': {
-  //     'Location': 'Chennai',
-  //     'Description': 'Some description for Card 3',
-  //     'Coordinate': '80.2707,13.0827',
-  //   },
-  //   'Card 4': {
-  //     'Location': 'Mahe',
-  //     'Description': 'Some description for Card 4',
-  //     'Coordinate': '75.5343,11.7002',
-  //   },
-  //   'Card 5': {
-  //     'Location': 'Ernakulam',
-  //     'Description': 'Some description for Card 5',
-  //     'Coordinate': '76.2999,9.9816',
-  //   },
-  // };
-
   List<Widget> _cardDisplay() {
     List<Widget> cardList = [];
 
@@ -213,7 +186,37 @@ class _ExploreState extends State<Explore> {
       }
     });
 
-    return cardList;
+    return filteredList.isNotEmpty ? filteredList : cardList;
+  }
+
+  List<Widget> filteredList = [];
+
+  void _filterList(String searchText) {
+    filteredList.clear();
+
+    if (searchText.isEmpty) {
+      setState(() {
+        filteredList.addAll(_cardDisplay());
+      });
+    } else {
+      setState(() {
+        widget.postDataMap.forEach((key, value) {
+          if (value is Map<String, String>) {
+            if (value['location']!
+                .toLowerCase()
+                .contains(searchText.toLowerCase())) {
+              filteredList.add(ExploreCard(
+                cardData: "${value['location']}",
+                cardDescription: "${value['description']}",
+                coordinates: "${value['coordinates']}",
+                id: "${value['id']}",
+                image64: "${value['image']}",
+              ));
+            }
+          }
+        });
+      });
+    }
   }
 
   @override
@@ -232,9 +235,7 @@ class _ExploreState extends State<Explore> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextField(
-                      onSubmitted: (value) {
-                        print("Search requested");
-                      },
+                      onChanged: _filterList,
                       controller: _searchController,
                       decoration: InputDecoration(
                         hintText: 'Search...',
@@ -256,6 +257,16 @@ class _ExploreState extends State<Explore> {
                     ),
                   ),
                   SizedBox(height: 30),
+                  if (filteredList.isEmpty == true &&
+                      _searchController.text.isNotEmpty)
+                    Text(
+                      "No results found",
+                      style: TextStyle(
+                        color: Color.fromRGBO(33, 42, 24, 1),
+                        fontSize: 20,
+                        fontFamily: 'NTR',
+                      ),
+                    ),
                   ..._cardDisplay(),
                 ],
               ),
