@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:trasheroo/main.dart';
 import 'HomePage.dart';
 import 'Login_Page.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -17,6 +18,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController _usernameTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
+
+  final database = FirebaseDatabase.instance.ref();
+  void profiledata(String email, String username) {
+    database.child("Profile Data").push().set({
+      'e-mail': email,
+      'username': username,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +117,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: TextFormField(
+                            controller: _usernameTextController,
                             validator: (value) {
                               if (value!.isEmpty ||
                                   !RegExp(r'^[a-z A-Z]+$').hasMatch(value!)) {
@@ -190,6 +200,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                     password: _passwordTextController.text)
                                 .then((value) {
                               print("Created New Account");
+                              profiledata(_emailTextController.text,
+                                  _usernameTextController.text);
                               Navigator.pop(context);
                               Navigator.push(
                                   context,

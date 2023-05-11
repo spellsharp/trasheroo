@@ -8,8 +8,13 @@ import 'RouteDistance.dart';
 import 'package:location/location.dart';
 import 'FullMap.dart';
 import 'main.dart';
+
 import 'dart:typed_data';
 import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'main.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Volunteer extends StatefulWidget {
   final cardData;
@@ -37,6 +42,7 @@ class VolunteerState extends State<Volunteer> {
   double longitude = 0;
   String startPoint = '';
   String endPoint = '';
+  String pub_day = '';
 
   render_image() {
     Uint8List bytes = base64Decode(widget.image);
@@ -76,6 +82,26 @@ class VolunteerState extends State<Volunteer> {
     setState(() {
       today = day;
     });
+  }
+
+  //Volunteer backend
+
+  final database = FirebaseDatabase.instance.ref();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  void volunteerdatabase(String time, String issueuid) {
+    final User user = auth.currentUser!;
+    final String email = user.email.toString();
+    // database.child("email/$email").push().child("time/$time").push().set({
+    //   'issueuid': issueuid,
+    // });
+    database.child("Volunteer Data").push().set({
+      'e-mail': email,
+      'time': time,
+      'issueID': issueuid,
+    });
+    print("volunteer backend done");
   }
 
   @override
@@ -228,7 +254,18 @@ class VolunteerState extends State<Volunteer> {
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
+                  child: Text(
+                    "Volunteer",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'NTR',
+                    ),
+                  ),
                   onPressed: (() {
+                    print("volunteer pressed");
+                    pub_day = today.toString().split(" ")[0];
+
+                    volunteerdatabase(pub_day, "issueID");
                     print("Post Button clicked");
                     _submitIssue();
                     Navigator.push(
@@ -237,13 +274,6 @@ class VolunteerState extends State<Volunteer> {
                           builder: (context) => MyHomePage(title: "Oombu")),
                     );
                   }),
-                  child: Text(
-                    "Volunteer",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'NTR',
-                    ),
-                  ),
                 ),
                 SizedBox(
                   height: 100,
