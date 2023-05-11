@@ -8,9 +8,11 @@ import 'RouteDistance.dart';
 import 'package:location/location.dart';
 import 'FullMap.dart';
 import 'main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'dart:typed_data';
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
@@ -18,15 +20,19 @@ import 'package:firebase_database/firebase_database.dart';
 
 class Volunteer extends StatefulWidget {
   final cardData;
-  final image;
+  final imageFile;
   final cardDescription;
   final coordinates;
+  final image;
+  final id;
   Volunteer({
     Key? key,
     this.cardData,
-    this.image,
+    this.imageFile,
     this.cardDescription,
     this.coordinates,
+    this.image,
+    this.id,
   }) : super(key: key);
 
   @override
@@ -60,6 +66,9 @@ class VolunteerState extends State<Volunteer> {
       startPoint = '$longitude,$latitude';
       endPoint = widget.coordinates;
     });
+    print("==============");
+    print(startPoint);
+    print("==============");
     _getDistance();
   }
 
@@ -93,9 +102,7 @@ class VolunteerState extends State<Volunteer> {
   void volunteerdatabase(String time, String issueuid) {
     final User user = auth.currentUser!;
     final String email = user.email.toString();
-    // database.child("email/$email").push().child("time/$time").push().set({
-    //   'issueuid': issueuid,
-    // });
+
     database.child("Volunteer Data").push().set({
       'e-mail': email,
       'time': time,
@@ -135,6 +142,9 @@ class VolunteerState extends State<Volunteer> {
                 ),
               ],
             ),
+            // shape: const RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+            // ),
             toolbarHeight: 73,
           ),
           body: SingleChildScrollView(
@@ -171,6 +181,25 @@ class VolunteerState extends State<Volunteer> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        GestureDetector(
+                            onTap: () {
+                              print("map clicked");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapScreenWidget(
+                                          markerPoint: widget.coordinates,
+                                        )),
+                              );
+                            },
+                            child: Container(
+                                child: Text("Where is it?",
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(0, 52, 36, 1),
+                                        fontSize: 17,
+                                        decoration:
+                                            TextDecoration.underline)))),
+                        SizedBox(height: 20),
                         distance != null
                             ? Text(
                                 "$distance Km away",
@@ -200,25 +229,6 @@ class VolunteerState extends State<Volunteer> {
                                   }
                                 },
                               ),
-                        GestureDetector(
-                            onTap: () {
-                              print("map clicked");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapScreenWidget(
-                                          markerPoint: widget.coordinates,
-                                        )),
-                              );
-                            },
-                            child: Container(
-                                child: Text("Where is it?",
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(0, 52, 36, 1),
-                                        fontSize: 17,
-                                        decoration:
-                                            TextDecoration.underline)))),
-                        // SizedBox(height: 20),
                         Text(
                           widget.cardData,
                           style: TextStyle(fontFamily: 'NTR', fontSize: 20),
@@ -265,8 +275,8 @@ class VolunteerState extends State<Volunteer> {
                     print("volunteer pressed");
                     pub_day = today.toString().split(" ")[0];
 
-                    volunteerdatabase(pub_day, "issueID");
-                    print("Post Button clicked");
+                    volunteerdatabase(pub_day, widget.id);
+
                     _submitIssue();
                     Navigator.push(
                       context,
