@@ -8,14 +8,13 @@ import 'RouteDistance.dart';
 import 'package:location/location.dart';
 import 'FullMap.dart';
 import 'main.dart';
-<<<<<<< HEAD
+
 import 'dart:typed_data';
 import 'dart:convert';
-=======
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
 import 'package:firebase_database/firebase_database.dart';
->>>>>>> ab46fd5 (Added Profile database, Volunteer database)
 
 class Volunteer extends StatefulWidget {
   final cardData;
