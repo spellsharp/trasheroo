@@ -288,8 +288,9 @@ class _DottedBoxState extends State<DottedBox> {
 
 class localTrash extends StatefulWidget {
   final trashData;
+  final username1;
   final coordinates;
-  const localTrash({Key? key, this.trashData, this.coordinates})
+  const localTrash({Key? key, this.trashData, this.coordinates, this.username1})
       : super(key: key);
   @override
   State<localTrash> createState() => localTrashState();
@@ -373,7 +374,7 @@ class localTrashState extends State<localTrash> {
             width: 285,
           ),
           Text(
-            "Trash near you",
+            "Trash near you, ${widget.username1}",
             style: TextStyle(
               fontSize: 35,
               fontFamily: 'NTR',
@@ -412,7 +413,8 @@ class localTrashState extends State<localTrash> {
 
 class Home extends StatefulWidget {
   final data;
-  Home({Key? key, this.data}) : super(key: key);
+  final username;
+  Home({Key? key, this.data, this.username}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
@@ -492,6 +494,7 @@ class _HomeState extends State<Home> {
                             ),
                             localTrash(
                               trashData: widget.data,
+                              username1: widget.username,
                             ),
                           ],
                         ),

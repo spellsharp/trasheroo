@@ -81,11 +81,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = [];
   bool _isLoading = false;
+  String user = '';
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
+    _getUsernameIssue();
     _getVolunteerIssue();
     _getPostIssue();
     get_postIssue();
@@ -160,6 +162,40 @@ class _MyHomePageState extends State<MyHomePage> {
     return description;
   }
 
+  late DatabaseReference groupref3;
+  Map<String, Map<String, String>> usernamemap = {};
+  _getUsernameIssue() async {
+    String description = '';
+
+    String location = '';
+    String imageEncoded = '';
+    groupref3 = FirebaseDatabase.instance.ref().child('Profile Data');
+    groupref3.onValue.listen((DatabaseEvent event) {
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> groupData =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        groupData.forEach((key, value) {
+          Map<String, String> username = {
+            'username': value['username'],
+          };
+          if (FirebaseAuth.instance.currentUser!.email == value['e-mail']) {
+            user = username['username'].toString();
+
+            print("==================================");
+            print("username");
+
+            print(user);
+            print("==================================");
+          }
+        });
+      } else {
+        print("Fuck");
+      }
+    });
+
+    return description;
+  }
+
   get_postIssue() async {
     String description = '';
     String location = '';
@@ -189,7 +225,10 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           _isLoading = false;
           _widgetOptions = <Widget>[
-            Home(data: postDataMap),
+            Home(
+              data: postDataMap,
+              username: user,
+            ),
             Explore(postDataMap: postDataMap),
             Profile(vdata: volunteerDataMap, pdata: postedDataMap),
           ];
