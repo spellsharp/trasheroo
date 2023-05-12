@@ -55,6 +55,7 @@ class RightCardState extends State<RightCard> {
               cardDescription: widget.cardDescription,
               coordinates: widget.coordinates,
               image: widget.image64,
+              id: widget.id,
             ),
           ),
         );
