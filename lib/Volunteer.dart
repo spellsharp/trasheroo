@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:trasheroo/main.dart';
 import 'dart:io';
 import 'HomePage.dart';
@@ -176,6 +177,7 @@ class VolunteerState extends State<Volunteer> {
                   children: [
                     SizedBox(width: 25),
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GestureDetector(
@@ -190,20 +192,36 @@ class VolunteerState extends State<Volunteer> {
                               );
                             },
                             child: Container(
-                                child: Text("Where is it?",
+                                child: Row(
+                              children: [
+                                Text("Where is it?",
                                     style: TextStyle(
                                         color: Color.fromRGBO(0, 52, 36, 1),
                                         fontSize: 17,
-                                        decoration:
-                                            TextDecoration.underline)))),
+                                        decoration: TextDecoration.underline)),
+                                Icon(
+                                  Icons.location_pin,
+                                  size: 18,
+                                ),
+                              ],
+                            ))),
                         SizedBox(height: 20),
                         distance != null
-                            ? Text(
-                                "$distance Km away",
-                                style: TextStyle(
-                                  fontFamily: 'NTR',
-                                  fontSize: 20,
-                                ),
+                            ? Column(
+                                children: [
+                                  Text(
+                                    "DISTANCE",
+                                    style: TextStyle(
+                                        fontSize: 15, fontFamily: 'NTR'),
+                                  ),
+                                  Text(
+                                    "$distance Km away",
+                                    style: TextStyle(
+                                      fontFamily: 'NTR',
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
                               )
                             : FutureBuilder(
                                 future: Future(() async {
@@ -226,12 +244,31 @@ class VolunteerState extends State<Volunteer> {
                                   }
                                 },
                               ),
-                        Text(
-                          widget.cardData,
-                          style: TextStyle(fontFamily: 'NTR', fontSize: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "LOCATION",
+                              style: TextStyle(fontSize: 15, fontFamily: 'NTR'),
+                            ),
+                            Text(
+                              widget.cardData,
+                              style: TextStyle(fontFamily: 'NTR', fontSize: 20),
+                            ),
+                          ],
                         ),
-                        Text(widget.cardDescription,
-                            style: TextStyle(fontFamily: 'NTR', fontSize: 18)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "DESCRIPTION",
+                              style: TextStyle(fontSize: 15, fontFamily: 'NTR'),
+                            ),
+                            Text(widget.cardDescription,
+                                style:
+                                    TextStyle(fontFamily: 'NTR', fontSize: 18)),
+                          ],
+                        ),
                       ],
                     ),
                   ],
@@ -241,23 +278,35 @@ class VolunteerState extends State<Volunteer> {
                   "When do you wish to start?",
                   style: TextStyle(fontFamily: 'NTR', fontSize: 25),
                 ),
-                TableCalendar(
-                  rowHeight: 35,
-                  focusedDay: today,
-                  firstDay: DateTime.now(),
-                  lastDay: DateTime.utc(2025, 1, 1),
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  onDaySelected: _onDaySelected,
-                  headerStyle: HeaderStyle(
-                    leftChevronVisible: false,
-                    rightChevronVisible: false,
-                    titleCentered: true,
-                    headerPadding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                    formatButtonVisible: false,
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: TableCalendar(
+                    calendarStyle: CalendarStyle(
+                      tableBorder: TableBorder.all(
+                        color: Colors.blueAccent,
+                        width: 1.0,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      canMarkersOverflow: true,
+                    ),
+                    rowHeight: 35,
+                    focusedDay: today,
+                    firstDay: DateTime.now(),
+                    lastDay: DateTime.utc(2025, 1, 1),
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    onDaySelected: _onDaySelected,
+                    headerStyle: HeaderStyle(
+                      leftChevronVisible: true,
+                      rightChevronVisible: true,
+                      titleCentered: true,
+                      headerPadding: EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      formatButtonVisible: false,
+                    ),
+                    availableGestures: AvailableGestures.all,
+                    selectedDayPredicate: (day) => isSameDay(day, today),
                   ),
-                  availableGestures: AvailableGestures.all,
-                  selectedDayPredicate: (day) => isSameDay(day, today),
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
