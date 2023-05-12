@@ -153,7 +153,6 @@ class _ExploreCardState extends State<ExploreCard> {
 
 class Explore extends StatefulWidget {
   final Map<String, Map<String, String>> postDataMap;
-
   Explore({
     Key? key,
     required this.postDataMap,
@@ -199,23 +198,29 @@ class _ExploreState extends State<Explore> {
         filteredList.addAll(_cardDisplay());
       });
     } else {
-      setState(() {
-        widget.postDataMap.forEach((key, value) {
-          if (value is Map<String, String>) {
-            if (value['location']!
-                .toLowerCase()
-                .contains(searchText.toLowerCase())) {
-              filteredList.add(ExploreCard(
-                cardData: "${value['location']}",
-                cardDescription: "${value['description']}",
-                coordinates: "${value['coordinates']}",
-                id: "${value['id']}",
-                image64: "${value['image']}",
-              ));
-            }
-          }
-        });
-      });
+      setState(
+        () {
+          widget.postDataMap.forEach(
+            (key, value) {
+              if (value is Map<String, String>) {
+                if (value['location']!
+                    .toLowerCase()
+                    .contains(searchText.toLowerCase())) {
+                  filteredList.add(
+                    ExploreCard(
+                      cardData: "${value['location']}",
+                      cardDescription: "${value['description']}",
+                      coordinates: "${value['coordinates']}",
+                      id: "${value['id']}",
+                      image64: "${value['image']}",
+                    ),
+                  );
+                }
+              }
+            },
+          );
+        },
+      );
     }
   }
 

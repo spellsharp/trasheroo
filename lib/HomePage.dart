@@ -11,6 +11,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'RouteDistance.dart';
+import 'StraightDistance.dart';
 
 class RightCard extends StatefulWidget {
   final cardData;
@@ -126,13 +127,12 @@ class RightCardState extends State<RightCard> {
                                       fontFamily: 'NTR'),
                                 ),
                                 SizedBox(width: 5),
-                                Text(
-                                  widget.cardDescription,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(33, 42, 24, 1),
-                                      fontSize: 16,
-                                      fontFamily: 'NTR'),
-                                ),
+                                Text(widget.cardDescription,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(33, 42, 24, 1),
+                                        fontSize: 16,
+                                        fontFamily: 'NTR'),
+                                    overflow: TextOverflow.visible),
                                 SizedBox(width: 5),
                                 Text(
                                   widget.coordinates,
@@ -288,9 +288,9 @@ class _DottedBoxState extends State<DottedBox> {
 
 class localTrash extends StatefulWidget {
   final trashData;
-  final username1;
   final coordinates;
-  const localTrash({Key? key, this.trashData, this.coordinates, this.username1})
+  final vol;
+  const localTrash({Key? key, this.trashData, this.coordinates, this.vol})
       : super(key: key);
   @override
   State<localTrash> createState() => localTrashState();
@@ -302,19 +302,25 @@ class localTrashState extends State<localTrash> {
 
   List<Widget> _cardList = [];
   String _startPoint = '';
-  String _endPoint = '';
+  // String _endPoint = '';
   bool isLoading = false;
 
   Future<void> _getLocation() async {
+    print("location");
     try {
       _locationData = await location.getLocation();
       setState(() {
         final latitude = _locationData?.latitude ?? 0.0;
         final longitude = _locationData?.longitude ?? 0.0;
-        _startPoint = '$longitude,$latitude';
-        _endPoint = widget.coordinates;
+        if (latitude != null && longitude != null) {
+          _startPoint = '$longitude,$latitude';
+        } else {
+          print("_startPoint is null");
+        }
+        // _endPoint = widget.coordinates;
         isLoading = true;
       });
+      // print(_startPoint);
     } catch (e) {
       print('Could not get location: $e');
     }
@@ -325,33 +331,43 @@ class localTrashState extends State<localTrash> {
   var distance = 0.0;
 
   Future<void> _getDistance(String start, String end) async {
+    print("distance");
     final distance1 = await getRouteDistance(start, end);
     setState(() {
       distance = distance1;
       isLoading = false;
     });
     print(distance);
+    // print(end);
   }
 
   Future<void> _cardDisplayHelper() async {
     await _getLocation();
     var count = 0;
     for (var value in widget.trashData.values) {
-      if (value is Map<String, String>) {
+      print("=====================================");
+      print(value['coordinates']);
+      print("=====================================");
+
+      // await _getDistance(_startPoint, value['coordinates']!);
+      if (value['coordinates'] != "") {
         await _getDistance(_startPoint, value['coordinates']!);
-        if (count < 3) {
-          if (distance < 10)
-            _cardList.add(
-              RightCard(
-                cardData: "${value['location']!}",
-                cardDescription: "${value['description']!}",
-                coordinates: "${value['coordinates']!}",
-                id: "${value['id']!}",
-                image64: "${value['image']!}",
-              ),
-            );
-          count++;
-        }
+
+        // await _getDistance('76.03424,9.04524', '74.59295, 9.24524');
+      }
+
+      if (count < 5) {
+        if (distance < 10 && value['coordinates'] != "")
+          _cardList.add(
+            RightCard(
+              cardData: "${value['location']!}",
+              cardDescription: "${value['description']!}",
+              coordinates: "${value['coordinates']!}",
+              id: "${value['id']!}",
+              image64: "${value['image']!}",
+            ),
+          );
+        count++;
       }
     }
   }
@@ -374,7 +390,7 @@ class localTrashState extends State<localTrash> {
             width: 285,
           ),
           Text(
-            "Trash near you, ${widget.username1}",
+            "Trash near you",
             style: TextStyle(
               fontSize: 35,
               fontFamily: 'NTR',
@@ -413,8 +429,7 @@ class localTrashState extends State<localTrash> {
 
 class Home extends StatefulWidget {
   final data;
-  final username;
-  Home({Key? key, this.data, this.username}) : super(key: key);
+  Home({Key? key, this.data}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
@@ -494,7 +509,6 @@ class _HomeState extends State<Home> {
                             ),
                             localTrash(
                               trashData: widget.data,
-                              username1: widget.username,
                             ),
                           ],
                         ),

@@ -24,12 +24,10 @@ class _PostIssueState extends State<PostIssue> {
   LocationData? currentLocation;
   String coordinates = '';
 
-
-  
-
-  void getCurrentLocation() async {
+  Future<void> getCurrentLocation() async {
     try {
       currentLocation = await location.getLocation();
+      _showLocationAlertDialog(true);
       setState(() {
         coordinates =
             '${currentLocation?.longitude},${currentLocation?.latitude}';
@@ -38,10 +36,48 @@ class _PostIssueState extends State<PostIssue> {
       print(coordinates);
       print("====================================");
     } catch (e) {
+      _showLocationAlertDialog(false);
       print("====================================");
       print('Could not get location: $e');
       print("====================================");
     }
+  }
+
+  void _showLocationAlertDialog(bool isLocationAcquired) {
+    String title, message;
+    if (isLocationAcquired) {
+      title = 'Location Acquired';
+      message = 'Your current location has been acquired.';
+    } else {
+      title = 'Location Error';
+      message =
+          'Unable to acquire your current location. Ensure location is turned on and restart the app.';
+    }
+
+    // set up the button
+    Widget okButton = ElevatedButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss the dialog
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   final database = FirebaseDatabase.instance.ref();
@@ -61,13 +97,15 @@ class _PostIssueState extends State<PostIssue> {
 
   void insertData(
       String subject, String body, String image, String coordinates) {
-    database.child("postIssue").push().set({
-      'subject': subject,
-      'body': body,
-      'image': image,
-      'co-ordinates': coordinates,
-      'user-email': FirebaseAuth.instance.currentUser!.email,
-    });
+    if (coordinates != "") {
+      database.child("postIssue").push().set({
+        'subject': subject,
+        'body': body,
+        'image': image,
+        'co-ordinates': coordinates,
+        'user-email': FirebaseAuth.instance.currentUser!.email,
+      });
+    } else {}
   }
 
   @override
@@ -161,19 +199,17 @@ class _PostIssueState extends State<PostIssue> {
               ),
               SizedBox(height: 30),
               ElevatedButton(
-                onPressed: currentLocation == null
-                    ? null
-                    : (() {
-                        print("Post Button clicked");
-                        insertData(title, details, image, coordinates);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyHomePage(
-                                    title: 'postIssuetest',
-                                  )),
-                        );
-                      }),
+                onPressed: (() {
+                  print("Post Button clicked");
+                  insertData(title, details, image, coordinates);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MyHomePage(
+                              title: 'postIssuetest',
+                            )),
+                  );
+                }),
                 child: Text(
                   "Post Issue",
                   style: TextStyle(
