@@ -95,16 +95,20 @@ class VolunteerState extends State<Volunteer> {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  void volunteerdatabase(String time, String issueuid) {
+  void volunteerdatabase(String? time, String? issueuid) {
     final User user = auth.currentUser!;
     final String email = user.email.toString();
 
-    database.child("Volunteer Data").push().set({
-      'e-mail': email,
-      'time': time,
-      'issueID': issueuid,
-    });
-    print("volunteer backend done");
+    if (time != null && issueuid != null) {
+      database.child("Volunteer Data").push().set({
+        'e-mail': email,
+        'time': time,
+        'issueID': issueuid,
+      });
+      print("volunteer backend done");
+    } else {
+      print("time or issueuid is null");
+    }
   }
 
   @override
@@ -138,9 +142,6 @@ class VolunteerState extends State<Volunteer> {
                 ),
               ],
             ),
-            // shape: const RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-            // ),
             toolbarHeight: 73,
           ),
           body: SingleChildScrollView(

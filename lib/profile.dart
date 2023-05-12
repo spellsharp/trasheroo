@@ -255,11 +255,13 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.only(left: 16.0, right: 24.0),
                   child: Card(
                     child: Container(
-                      height: 200,
                       decoration: BoxDecoration(
                           color: Color.fromARGB(255, 96, 125, 75),
                           borderRadius: BorderRadius.circular(5)),
-                      child: Text(widget.pdata.toString()),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(widget.pdata.toString()),
+                      ),
                     ),
                   ),
                 ),
@@ -277,11 +279,13 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.only(left: 16.0, right: 24.0),
                   child: Card(
                     child: Container(
-                      height: 200,
                       decoration: BoxDecoration(
                           color: Color.fromARGB(255, 96, 125, 75),
                           borderRadius: BorderRadius.circular(5)),
-                      child: Text(widget.vdata.toString()),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(widget.vdata.toString()),
+                      ),
                     ),
                   ),
                 ),
