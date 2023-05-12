@@ -208,6 +208,7 @@ class VolunteerState extends State<Volunteer> {
                         SizedBox(height: 20),
                         distance != null
                             ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "DISTANCE",
@@ -256,6 +257,11 @@ class VolunteerState extends State<Volunteer> {
                               style: TextStyle(fontFamily: 'NTR', fontSize: 20),
                             ),
                           ],
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Container(height: 1, color: Colors.black38),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
