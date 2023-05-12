@@ -256,7 +256,7 @@ class _ProfileState extends State<Profile> {
                   child: Card(
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 96, 125, 75),
+                          color: Color.fromARGB(255, 198, 255, 158),
                           borderRadius: BorderRadius.circular(5)),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -280,7 +280,7 @@ class _ProfileState extends State<Profile> {
                   child: Card(
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 96, 125, 75),
+                          color: Color.fromARGB(255, 198, 255, 158),
                           borderRadius: BorderRadius.circular(5)),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
