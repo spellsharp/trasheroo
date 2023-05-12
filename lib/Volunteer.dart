@@ -283,8 +283,13 @@ class VolunteerState extends State<Volunteer> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TableCalendar(
                     calendarStyle: CalendarStyle(
+                      todayDecoration:
+                          BoxDecoration(color: Color.fromARGB(255, 45, 112, 0)),
+                      selectedDecoration: BoxDecoration(
+                        color: Color.fromARGB(255, 30, 196, 8),
+                      ),
                       tableBorder: TableBorder.all(
-                        color: Colors.blueAccent,
+                        color: Color.fromARGB(255, 4, 34, 3),
                         width: 1.0,
                         borderRadius: BorderRadius.circular(5),
                       ),
